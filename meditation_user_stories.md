@@ -26,6 +26,8 @@ Acceptance Criteria:
 User details are saved in local storage after registration and used for authentication during login.
 Story Points: 3 
 
+
+
 **Homepage**
 As a user, I want a personalized greeting with my name and a title, so that I feel welcomed and encouraged to meditate.
 Acceptance Criteria:
@@ -50,6 +52,14 @@ Acceptance Criteria:
 Display a logo in the top-left corner and a settings icon in the top-right corner for navigation.
 Story Points: 1
 
+**Analytics and Stats screen**
+As a user, I want to view an overview of my data on the home screen so that I can monitor my progress at a glance.
+Acceptance Criteria:
+The page displays meditation time, favorites, meditations completed, etc intake on the analytics screen.
+Story Points: 5
+
+
+
 **About section**
 As a user, I want an “About” section for each exercise, so that I can understand its benefits and purpose.
 Acceptance Criteria:
@@ -68,11 +78,96 @@ Acceptance Criteria:
 Include a prominent “Add to Favorites” button at the bottom of the page.
 Story Points: 1
 
-**Easy Navigation**
-As a user, I want navigation icons for sharing and going back, so that I can easily manage the exercise page.
+
+
+**Logout**
+As a user, I want a clear and visible logout button, so that I can easily log out of my account when I’m done using the app.
 Acceptance Criteria:
-Display a back icon and a share icon at the top of the page for easy navigation.
+Display a clear and visible “Logout” button in the app.
+Tapping the button logs the user out and redirects them to the login page.
+User session data is cleared upon logout to ensure secure access.
 Story Points: 1
+
+**Preferences**
+As a user, I want to save my preferences such as dark mode so that the app remembers my settings.
+Acceptance Criteria:
+The remembers the user's timezone, favorites, and other settings across sessions.
+
+**Data Persistence**
+As a user, I want my data like login state to persist across sessions so that I don't need to re-enter details every time.
+Acceptance Criteria:
+The app automatically logs in verified users unless they log out manually.
+Story Points: 3
+
+
+
+**Calender**
+As a user, I want to synchronize the calendar with my calander on a different platform and view the current month and navigate between months, so that I can easily select dates for reminders.
+Acceptance Criteria:
+Import and synchronize a users calender from different platforms.
+Display the current month with all the days visible.
+Provide navigation arrows to move between months.
+Story Points: 5
+
+**Calender Scheduling**
+As a user, I want to select a date and time for a reminder, so that I can schedule it properly.
+Acceptance Criteria:
+Display a default text “Selected Date: None” and “Selected Time: 20:44” to indicate no date has been selected but a time is chosen.
+Allow users to select a specific time and date.
+Updates calender to include this reminder on all synchronized calenders.
+Story Points: 3
+
+**Sharing**
+As a user, I want to easily share recommended exercises with friends or family, so that I can help others discover helpful activities.
+Acceptance Criteria:
+Provide a clear share button/icon on the exercise detail page for easy sharing.
+Allow users to share exercises via multiple platforms (e.g., social media, email, or messaging apps).
+Story Points: 3
+
+
+
+**Settings**
+As a user, I want to access a settings menu from any screen so that I can adjust preferences at my convenience.
+Acceptance Criteria:
+A meditation app includes a settings icon in the top right corner of all screens, linking to the settings menu.
+Story Points: 1
+
+**Settings Categories**
+As a user, I want to see categorized sections in the settings menu so that I can quickly find the options I need.
+Acceptance Criteria:
+The settings page has categorized sections for things such as timezones.
+Story Points: 2
+
+
+
+**Light/Dark themes**
+As a user, I want to switch between light and dark themes, so that I can reduce eye strain and customize the app’s visual experience.
+Acceptance Criteria:
+Provide a “Theme” toggle or switch in the settings section for light and dark mode options.
+Allow the user to switch between light and dark mode seamlessly.
+The theme should change immediately without needing to refresh or restart the app.
+Story Points: 2
+
+**Update Email**
+As a user, I want to update my email on the settings screen so that I can keep my account secure.
+Acceptance Criteria:
+The settings page includes an Account Settings section for users to update credentials.
+Story Points: 4
+
+
+
+**Reminders**
+As a user, I want to add a reminder after selecting a time, so that I can schedule it for a future date and time.
+Acceptance Criteria:
+After selecting a time, users can click the “Add Reminder” button to schedule the reminder.
+Story Points: 3
+
+**Reminders list**
+As a user, I want to see a list of all my reminders, so that I can manage them easily.
+Acceptance Criteria:
+Display a list of all reminders with the selected date and time.
+Provide an option to delete a reminder by clicking the red “Delete” button next to it.
+Story Points: 3
 
 **Favorites**
 As a user, I want to add an item to my Favorites, so that I can save activities or articles I like for quick access later.
@@ -96,56 +191,6 @@ Acceptance Criteria:
 The “My Favorites” screen displays a list of saved items with their title, category, and duration.
 Users can tap any item to view details or start the activity.
 The Favorites list remains organized for easy browsing and quick access.
-Story Points: 5
-
-**Calender**
-As a user, I want to view the calendar for the current month and navigate between months, so that I can easily select dates for reminders.
-Acceptance Criteria:
-Display the current month with all the days visible.
-Provide navigation arrows to move between months.
-Story Points: 5
-
-**Calender Scheduling**
-As a user, I want to select a date and time for a reminder, so that I can schedule it properly.
-Acceptance Criteria:
-Display a default text “Selected Date: None” and “Selected Time: 20:44” to indicate no date has been selected but a time is chosen.
-Allow users to select a specific time and date.
-Story Points: 3
-
-**Reminders**
-As a user, I want to add a reminder after selecting a time, so that I can schedule it for a future date and time.
-Acceptance Criteria:
-After selecting a time, users can click the “Add Reminder” button to schedule the reminder.
-Story Points: 3
-
-**Reminders list**
-As a user, I want to see a list of all my reminders, so that I can manage them easily.
-Acceptance Criteria:
-Display a list of all reminders with the selected date and time.
-Provide an option to delete a reminder by clicking the red “Delete” button next to it.
-Story Points: 3
-
-**Sharing**
-As a user, I want to easily share recommended exercises with friends or family, so that I can help others discover helpful activities.
-Acceptance Criteria:
-Provide a clear share button/icon on the exercise detail page for easy sharing.
-Allow users to share exercises via multiple platforms (e.g., social media, email, or messaging apps).
-Story Points: 3
-
-**Logout**
-As a user, I want a clear and visible logout button, so that I can easily log out of my account when I’m done using the app.
-Acceptance Criteria:
-Display a clear and visible “Logout” button in the app.
-Tapping the button logs the user out and redirects them to the login page.
-User session data is cleared upon logout to ensure secure access.
-Story Points: 1
-
-**Light/Dark themes**
-As a user, I want to switch between light and dark themes, so that I can reduce eye strain and customize the app’s visual experience.
-Acceptance Criteria:
-Provide a “Theme” toggle or switch in the settings section for light and dark mode options.
-Allow the user to switch between light and dark mode seamlessly.
-The theme should change immediately without needing to refresh or restart the app.
 Story Points: 5
 
 
