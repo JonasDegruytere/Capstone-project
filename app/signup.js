@@ -78,7 +78,7 @@ const SignUp = () => {
                                 }}
                                 value={userName}
                                 onChangeText={setUserName}
-                                placeholder="Username"
+                                placeholder="UserName"
                                 />
                     </View>
                     <View style={{ marginBottom: 10 }} testID="email">
