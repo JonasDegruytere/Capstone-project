@@ -1,5 +1,7 @@
 # Meditation User Story
 
+
+### Login/Registration User Stories
 **Registration**
 As a user, I want to register by entering my username, email, and password, so that I can create an account.
 Acceptance Criteria:
@@ -27,7 +29,7 @@ User details are saved in local storage after registration and used for authenti
 Story Points: 3 
 
 
-
+### Homepage User Stories
 **Homepage**
 As a user, I want a personalized greeting with my name and a title, so that I feel welcomed and encouraged to meditate.
 Acceptance Criteria:
@@ -59,7 +61,7 @@ The page displays meditation time, favorites, meditations completed, etc intake 
 Story Points: 5
 
 
-
+### Details screen User Stories
 **About section**
 As a user, I want an “About” section for each exercise, so that I can understand its benefits and purpose.
 Acceptance Criteria:
@@ -79,7 +81,7 @@ Include a prominent “Add to Favorites” button at the bottom of the page.
 Story Points: 1
 
 
-
+### Persistent User Stories
 **Logout**
 As a user, I want a clear and visible logout button, so that I can easily log out of my account when I’m done using the app.
 Acceptance Criteria:
@@ -100,7 +102,7 @@ The app automatically logs in verified users unless they log out manually.
 Story Points: 3
 
 
-
+### External API User Stories
 **Calender**
 As a user, I want to synchronize the calendar with my calander on a different platform and view the current month and navigate between months, so that I can easily select dates for reminders.
 Acceptance Criteria:
@@ -125,7 +127,7 @@ Allow users to share exercises via multiple platforms (e.g., social media, email
 Story Points: 3
 
 
-
+### Settings page User Stories
 **Settings**
 As a user, I want to access a settings menu from any screen so that I can adjust preferences at my convenience.
 Acceptance Criteria:
@@ -139,7 +141,7 @@ The settings page has categorized sections for things such as timezones.
 Story Points: 2
 
 
-
+### Menu settings User Stories
 **Light/Dark themes**
 As a user, I want to switch between light and dark themes, so that I can reduce eye strain and customize the app’s visual experience.
 Acceptance Criteria:
@@ -155,7 +157,7 @@ The settings page includes an Account Settings section for users to update crede
 Story Points: 4
 
 
-
+### Notifications User Stories
 **Reminders**
 As a user, I want to add a reminder after selecting a time, so that I can schedule it for a future date and time.
 Acceptance Criteria:
