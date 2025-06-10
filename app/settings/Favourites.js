@@ -12,10 +12,28 @@ import { COLORS, FONT, SIZES } from "../../constants";
 import DailyMeditation from "../../components/DailyMeditation";
 import { useFocusEffect } from "expo-router";
 import ScreenHeaderBtn from '../../components/ScreenHeaderBtn';
+import { useTheme } from "../../context/ThemeProvider";
+
+const getThemeStyles = (isDarkMode) => ({
+
+    TextStyle: {
+        color: isDarkMode ? COLORS.lightText : COLORS.darkText,
+    },
+    BackgroundStyle: {
+        backgroundColor: isDarkMode ? COLORS.darkBackground : COLORS.lightBackground,
+        lightBackground: isDarkMode ? COLORS.lightDarkBackground : COLORS.lightWhiteBackground,
+    }
+});
+
 
 const Favourites = () => {
     const [favorites, setFavorites] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const { theme } = useTheme();
+    const isDarkMode = theme === "dark";
+    const themeStyles = getThemeStyles(isDarkMode);
+
 
      const loadFavorites = async () => {
         try {
@@ -35,18 +53,23 @@ const Favourites = () => {
         }, [])
     );
 return(
-        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.darkBackground }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: themeStyles.BackgroundStyle.backgroundColor }}>
             <ScreenHeaderBtn/>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.container}>
                 {isLoading ? (
-                    <ActivityIndicator size="large" color={COLORS.primary} />
+                    <ActivityIndicator size="large" color={themeStyles.TextStyle.color} />
                 ) : favorites.length === 0 ? (
-                    <Text style={styles.headerTitle}>No favorite items found.</Text>
+                        <Text style={[styles.headerTitle, {color: themeStyles.TextStyle.color}]}>No favorite items found.</Text>
                 ) : (
                     <>
-                        <Text style={{ textAlign: "center", color: "#FF4500", fontWeight: "bold" }}>My Favourite Exercises</Text>
-                        <DailyMeditation meditations={favorites} />
+                                <Text style={{
+                                    textAlign: "center", color: COLORS.tertiary, fontWeight: "bold", fontSize: SIZES.large, padding: 8,
+                                    marginTop: 10,
+                                    borderWidth: 2,
+                                    borderRadius: 50,
+                                    background: themeStyles.BackgroundStyle.lightBackground, }}>My Favourite Exercises</Text>
+                                <DailyMeditation meditations={favorites} isDarkMode={ isDarkMode} />
                     </>
                 )}
                 </View>

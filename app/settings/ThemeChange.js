@@ -19,7 +19,7 @@ const ThemeChange = () => {
         <SafeAreaView
         style={{
             flex: 1,
-            backgroundColor: isDarkMode ? COLORS.darkBackground : COLORS.lightWhite,
+                backgroundColor: isDarkMode ? COLORS.darkBackground : COLORS.lightWhiteBackground,
         }}
         >
             <ScreenHeaderBtn/>
@@ -28,7 +28,7 @@ const ThemeChange = () => {
                     justifyContent: "space-between",
                     padding: SIZES.medium,
                     borderRadius: SIZES.small,
-                    backgroundColor: isDarkMode ? COLORS.lightWhite : COLORS.darkBackground,
+                    backgroundColor: isDarkMode ? COLORS.lightWhiteBackground : COLORS.darkBackground,
                     ...SHADOWS.medium,
                     shadowColor: COLORS.white,
                     marginVertical: SIZES.medium,
@@ -48,7 +48,7 @@ const ThemeChange = () => {
                     color: isDarkMode ? COLORS.lightText : COLORS.darkText,
                     fontSize: SIZES.medium,
                     fontFamily: "DMBold",
-                    marginHorizontal: SIZES.medium,
+                    marginHorizontal: 25,
                     marginVertical: SIZES.small,
                     }}
                 >
@@ -59,6 +59,7 @@ const ThemeChange = () => {
                     trackColor={{ false: COLORS.darkText, true: COLORS.lightText }}
                     value={isDarkMode}
                     onValueChange={toggleTheme}
+                    style={{marginHorizontal: 25} }
                 />
             </View>
     </SafeAreaView>

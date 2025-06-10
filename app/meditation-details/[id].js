@@ -21,6 +21,21 @@ import {
 import ScreenHeaderBtn from '../../components/ScreenHeaderBtn';
 import { COLORS, icons, SIZES } from "../../constants";
 import useFetch from "../../hook/useFetch";
+import { useTheme } from "../../context/ThemeProvider";
+
+
+
+const getThemeStyles = (isDarkMode) => ({
+
+    TextStyle: {
+        color: isDarkMode ? COLORS.lightText : COLORS.darkText,
+    },
+    BackgroundStyle: {
+        backgroundColor: isDarkMode ? COLORS.darkBackground : COLORS.lightBackground,
+        lightBackground: isDarkMode ? COLORS.lightDarkBackground : COLORS.lightWhiteBackground,
+    }
+});
+
 
 const tabs = ["About", "Instructions"];
 
@@ -33,32 +48,37 @@ const MeditationDetails = () => {
   const meditationItem = useFetch().getItemById(parseInt(id, 10));
 
   const [activeTab, setActiveTab] = useState(tabs[0]);
-  const [refreshing, setRefreshing] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    refetch();
-    setRefreshing(false);
-    }, []);
+    const { theme } = useTheme();
+    const isDarkMode = theme === "dark";
+    const themeStyles = getThemeStyles(isDarkMode);
+
+      const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        refetch();
+        setRefreshing(false);
+        }, []);
 
 
     const displayTabContent = () => {
         if (activeTab === "About") {
             return (
             <About
-                title={meditationItem.title}
-                info={meditationItem.description ?? "No data provided"}
+                    title={meditationItem.title}
+                    info={meditationItem.description ?? "No data provided"}
+                    isDarkMode={isDarkMode }
             />
             );
         } else if (activeTab === "Instructions") {
             return (
-            <View style={styles.specificsContainer}>
-                <Text style={styles.specificsTitle}>Instructions:</Text>
-                <View style={styles.pointsContainer}>
+                <View style={[styles.specificsContainer, {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]}>
+                    <Text style={[styles.specificsTitle, {color: themeStyles.TextStyle.color}]}>Instructions:</Text>
+                    <View style={[styles.pointsContainer, {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]}>
                 {(meditationItem.instructions ?? ["N/A"]).map((item, index) => (
                     <View style={styles.pointWrapper} key={index}>
                     <View style={styles.pointDot} />
-                    <Text style={styles.pointText}>{item}</Text>
+                        <Text style={[styles.pointText, {color: themeStyles.TextStyle.color}]}>{item}</Text>
                     </View>
                 ))}
                 </View>
@@ -82,7 +102,7 @@ const MeditationDetails = () => {
     };
 
     return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: themeStyles.BackgroundStyle.backgroundColor }}>
         <ScreenHeaderBtn detailPage={true} handleShare={onShare} />
 
         <ScrollView
@@ -98,12 +118,13 @@ const MeditationDetails = () => {
         ) : !meditationItem || meditationItem.length === 0 ? (
             <Text>No data available</Text>
         ) : (
-            <View style={{ padding: SIZES.medium, paddingBottom: 100 }}>
+            <View style={{ padding: SIZES.medium, paddingBottom: 100, backgroundcolor: themeStyles.BackgroundStyle.backgroundColor }}>
             <MeditationTopDisplay
-                meditationImage={meditationItem.image}
-                meditationTitle={meditationItem.title}
-                duration={meditationItem.duration}
-                target={meditationItem.target}
+                                        meditationImage={meditationItem.image}
+                                        meditationTitle={meditationItem.title}
+                                        duration={meditationItem.duration}
+                                        target={meditationItem.target}
+                                        isDarkMode={isDarkMode }
             />
 
             <Tabs
@@ -117,7 +138,7 @@ const MeditationDetails = () => {
         )}
         </ScrollView>
 
-        <Footer data={meditationItem} />
+            <Footer data={meditationItem} isDarkMode={isDarkMode} />
     </SafeAreaView>
     );
 }

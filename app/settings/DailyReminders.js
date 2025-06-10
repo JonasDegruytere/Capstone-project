@@ -10,16 +10,31 @@ import * as Notifications from "expo-notifications";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { COLORS, SIZES } from "../../constants";
 import { useTheme } from "../../context/ThemeProvider";
+import ScreenHeaderBtn from "../../components/ScreenHeaderBtn";
+
+
+const getThemeStyles = (isDarkMode) => ({
+
+    TextStyle: {
+        color: isDarkMode ? COLORS.lightText : COLORS.darkText,
+    },
+    BackgroundStyle: {
+        backgroundColor: isDarkMode ? COLORS.darkBackground : COLORS.lightBackground,
+        lightBackground: isDarkMode ? COLORS.lightDarkBackground : COLORS.lightWhiteBackground,
+    }
+});
+
 
 const DailyReminders = () => {
     const { theme } = useTheme();
-    const isDarkMode = theme === "dark"
+    const isDarkMode = theme === "dark";
     const [reminders, setReminders] = useState([]);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(new Date());
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [manualTime, setManualTime] = useState("");
     const [userDetails, setUserDetails] = useState(null);
+    const themeStyles = getThemeStyles(isDarkMode);
 
     const requestPermissions = async () => {
         const { status } = await Notifications.requestPermissionsAsync();
@@ -101,20 +116,32 @@ const DailyReminders = () => {
       };
       const Reminder = ({ item }) => (
         <View style={styles.reminderContainer}>
-          <Text style={styles.description}>{item.description}</Text>
-          <Text style={styles.date}>{item.date} - {item.time}</Text>
-          <TouchableOpacity onPress={() => deleteReminder(item.id)} style={styles.deleteButton}>
+              <Text style={[styles.description, {color: themeStyles.TextStyle.color}]}>{item.description}</Text>
+              <Text style={[styles.date, { color: themeStyles.TextStyle.color }]}>{item.date} - {item.time}</Text>
+              <TouchableOpacity onPress={() => deleteReminder(item.id)} style={[styles.deleteButton, { color: themeStyles.TextStyle.color }]}>
             <Text style={styles.deleteText}>Delete</Text>
           </TouchableOpacity>
         </View>
       );
-    return(
-        <SafeAreaView style={{ flex: 1, backgroundColor: isDarkMode ? COLORS.darkBackground : COLORS.lightWhite }}>
+    return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: themeStyles.BackgroundStyle.backgroundColor }}>
+            <ScreenHeaderBtn />
         <Stack.Screen options={{ headerTitle: "Daily Reminders" }} />
         <ScrollView contentContainerStyle={{ padding: SIZES.medium }}>
-          <Calendar
+                <Calendar
+                    style={{
+                        borderWidth: 2,
+                        borderColor: COLORS.gray,
+                        backgroundColor: themeStyles.BackgroundStyle.lightBackground,
+                        calendarBackground: themeStyles.BackgroundStyle.lightBackground,
+                        dayTextColor: themeStyles.BackgroundStyle.lightBackground,
+                        selectedDayBackgroundColor: '#00adf5',
+                        color: themeStyles.BackgroundStyle.lightBackground,
+                        height: 350,
+                    }}
+                    theme={{ calendarBackground: themeStyles.BackgroundStyle.lightBackground} }
             onDayPress={(day) => setSelectedDate(day.dateString)}
-            markedDates={{ [selectedDate]: { selected: true, selectedColor: COLORS.primary } }}
+            markedDates={{ [selectedDate]: { selected: true, selectedColor: themeStyles.BackgroundStyle.backgroundColor } }}
           />
   
           {showTimePicker && (
@@ -134,18 +161,18 @@ const DailyReminders = () => {
             onChangeText={setManualTime}
             keyboardType="numeric"
             maxLength={5}
-            style={styles.input}
+            style={[styles.input, { color: themeStyles.TextStyle.color }, {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]}
           />
   
-          <Text style={styles.selected}>Date: {selectedDate || "None"}</Text>
-          <Text style={styles.selected}>Time: {manualTime || selectedTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</Text>
+                <Text style={[styles.selected, {color: themeStyles.TextStyle.color}]}>Date: {selectedDate || "None"}</Text>
+                <Text style={[styles.selected, { color: themeStyles.TextStyle.color }]}>Time: {manualTime || selectedTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</Text>
   
-          <TouchableOpacity onPress={handleAddReminder} style={styles.button}>
-            <Text style={styles.buttonText}>Add Reminder</Text>
+                <TouchableOpacity onPress={handleAddReminder} style={[styles.button, {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]}>
+          <Text style={[styles.buttonText, {color: themeStyles.TextStyle.color}]}>Add Reminder</Text>
           </TouchableOpacity>
   
-          <Text style={styles.reminderHeader}>All Reminders:</Text>
-          {reminders.length > 0 ? reminders.map((rem) => <Reminder key={rem.id} item={rem} />) : <Text>No reminders yet.</Text>}
+            <Text style={[styles.reminderHeader, {color: themeStyles.TextStyle.color}]}>All Reminders:</Text>
+                {reminders.length > 0 ? reminders.map((rem) => <Reminder key={rem.id} item={rem} />) : <Text style={[{ color: themeStyles.TextStyle.color }]}>No reminders yet.</Text>}
         </ScrollView>
       </SafeAreaView>
     
@@ -154,9 +181,9 @@ const DailyReminders = () => {
 
     const styles = StyleSheet.create({
         reminderContainer: {
-          backgroundColor: COLORS.primary, borderRadius: SIZES.small, padding: SIZES.small, marginVertical: SIZES.small
+          backgroundColor: COLORS.darkText, borderRadius: SIZES.small, padding: SIZES.small, marginVertical: SIZES.small
         },
-        description: { color: COLORS.lightWhite, fontWeight: "bold" },
+        description: { fontWeight: "bold" },
         date: { color: COLORS.darkText, fontSize: SIZES.small },
         input: { borderColor: COLORS.primary, borderWidth: 1, padding: SIZES.small, marginVertical: SIZES.small },
         selected: { fontSize: SIZES.medium, marginVertical: SIZES.small, color: COLORS.primary },

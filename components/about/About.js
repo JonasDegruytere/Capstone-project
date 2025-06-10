@@ -1,14 +1,27 @@
 import { View, Text } from "react-native";
-
+import { COLORS, FONT, SIZES, SHADOWS } from "../../constants/theme";
 import styles from "./About.style";
 
-const About = ({ info, title }) => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.headText}>About {title}:</Text>
+const getThemeStyles = (isDarkMode) => ({
 
-      <View style={styles.contentBox}>
-        <Text style={styles.contextText}>{info}</Text>
+    TextStyle: {
+        color: isDarkMode ? COLORS.lightText : COLORS.darkText,
+    },
+    BackgroundStyle: {
+        backgroundColor: isDarkMode ? COLORS.darkBackground : COLORS.lightBackground,
+        lightBackground: isDarkMode ? COLORS.lightDarkBackground : COLORS.lightWhiteBackground,
+    }
+});
+
+
+const About = ({ info, title, isDarkMode }) => {
+    const themeStyles = getThemeStyles(isDarkMode);
+  return (
+      <View style={[styles.container, {backgroundcolor: themeStyles.BackgroundStyle.lightBackground}]}>
+          <Text style={[styles.headText, {color: themeStyles.TextStyle.color}]}>About {title}:</Text>
+
+          <View style={[styles.contentBox, {color: themeStyles.TextStyle.color}]}>
+              <Text style={[styles.contextText, {color: themeStyles.TextStyle.color}]}>{info}</Text>
       </View>
     </View>
   );

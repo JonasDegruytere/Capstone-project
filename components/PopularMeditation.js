@@ -13,7 +13,19 @@ import {
 
 import useFetch from "../hook/useFetch";
 
-const PopularMeditation = () => {
+const getThemeStyles = (isDarkMode) => ({
+
+    TextStyle: {
+        color: isDarkMode ? COLORS.lightText : COLORS.darkText,
+    },
+    BackgroundStyle: {
+        backgroundColor: isDarkMode ? COLORS.darkBackground : COLORS.lightBackground,
+        lightBackground: isDarkMode ? COLORS.lightDarkBackground : COLORS.lightWhiteBackground,
+    }
+});
+
+
+const PopularMeditation = ({ isDarkMode }) => {
     const router = useRouter();
     const { data, isLoading, error } = useFetch("search", {
       query: "React developer",
@@ -21,10 +33,11 @@ const PopularMeditation = () => {
     });
   
     const [selectedMeditation, setselectedMeditation] = useState();
+    const themeStyles = getThemeStyles(isDarkMode);
 
     const renderMeditationCard = ({ item }) => (
         <TouchableOpacity
-          style={styles.container(selectedMeditation, item)}
+            style={[styles.container(selectedMeditation, item), {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]}
           onPress={() => handleCardPress(item)}
         >
           <TouchableOpacity style={styles.logoContainer(selectedMeditation, item)}>
@@ -35,25 +48,25 @@ const PopularMeditation = () => {
             />
           </TouchableOpacity>
           <View style={styles.tabsContainer}>
-            <Text style={styles.companyName} numberOfLines={1}>
+                <Text style={[styles.companyName, {color: themeStyles.TextStyle.color}]} numberOfLines={1}>
               {item.target}
             </Text>
           </View>
     
-          <View style={styles.infoContainer}>
+            <View style={[styles.infoContainer, { color: themeStyles.TextStyle.color }]}>
             <Text
-              style={styles.meditationName(selectedMeditation, item)}
+                    style={[styles.meditationName(selectedMeditation, item), { color: themeStyles.TextStyle.color }]}
               numberOfLines={1}
             >
               {item.title}
             </Text>
             <View style={styles.infoWrapper}>
-              <Text style={styles.publisher(selectedMeditation, item)}>
+                    <Text style={[styles.publisher(selectedMeditation, item), { color: themeStyles.TextStyle.color }]}>
                 {item?.shortDescription}
               </Text>
             </View>
           </View>
-          <Text style={styles.location}> {item.duration}</Text>
+            <Text style={[styles.location, { color: themeStyles.TextStyle.color }]}> {item.duration}</Text>
         </TouchableOpacity>
     );
 
@@ -65,12 +78,12 @@ const PopularMeditation = () => {
    return(
     <>
         <View style={styles.container} testID="popularContainer">
-            <View style={styles.header} testID="popularHeader">
-                <Text style={styles.headerTitle}>Popular Meditations</Text>
+               <View style={[styles.header, {borderColor: themeStyles.TextStyle.color}]} testID="popularHeader">
+                   <Text style={[styles.headerTitle, {color: themeStyles.TextStyle.color}]}>Popular Meditations</Text>
                 <TouchableOpacity></TouchableOpacity>
             </View>
         </View>
-        <View style={styles.cardsContainer}>
+           <View style={[styles.cardsContainer, {backgroundColor: themeStyles.BackgroundStyle.backgroundColor}]}>
                 {isLoading ? (
                 <ActivityIndicator size="large" color={COLORS.primary} />
                 ) : error ? (
@@ -96,6 +109,7 @@ const styles = StyleSheet.create({
       padding: SIZES.xLarge,
       marginHorizontal: SIZES.small,
       marginTop: SIZES.xLarge, 
+      marginBottom: SIZES.xLarge,
       backgroundColor: selectedMeditation === item.id ? COLORS.primary : "#FFF",
       borderRadius: SIZES.medium,
       justifyContent: "space-between",
@@ -105,13 +119,14 @@ const styles = StyleSheet.create({
 
     header: {
       flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
+      justifyContent: "center",
+        alignItems: "center",
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
     },
     headerTitle: {
-      fontSize: SIZES.large,
+      fontSize: SIZES.xLarge,
       fontFamily: FONT.medium,
-      color: COLORS.primary,
     },
     headerBtn: {
       fontSize: SIZES.medium,

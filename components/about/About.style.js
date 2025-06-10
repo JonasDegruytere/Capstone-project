@@ -10,7 +10,12 @@ const styles = StyleSheet.create({
   },
 contextText: {
     textAlign: 'justify'
-  },
+    },
+    headText: {
+        fontSize: SIZES.large,
+        fontWeight: "bold",
+        marginBottom: SIZES.small,
+    },
   logoBox: {
     width: "100%",
     height: 250,

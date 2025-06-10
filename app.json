@@ -28,7 +28,12 @@
       "versionCode": 1
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "scheme": "meditationapp",
+      "publicPath": "./"
+    },
+    "experiments": {
+      "scheme": "meditationapp",
+      "baseUrl": "./"
     }
   }
 }

@@ -6,9 +6,24 @@ import { ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ScreenHeaderBtn from "../components/ScreenHeaderBtn";
 import { TouchableOpacity } from "react-native";
+import { useTheme } from "../context/ThemeProvider";
+
+const getThemeStyles = (isDarkMode) => ({
+
+    TextStyle: {
+        color: isDarkMode ? COLORS.lightText : COLORS.darkText,
+    },
+    BackgroundStyle: {
+        backgroundColor: isDarkMode ? COLORS.darkBackground : COLORS.lightBackground,
+        lightBackground: isDarkMode ? COLORS.lightDarkBackground : COLORS.lightWhiteBackground,
+    }
+});
 
 const Settings = () => {
     const [userDetails, setUserDetails] = useState(null);
+    const { theme, toggleTheme } = useTheme();
+    const isDarkMode = theme === "dark";
+    const themeStyles = getThemeStyles(isDarkMode);
     const router = useRouter();
     const settings = [
      {
@@ -28,7 +43,7 @@ const Settings = () => {
      {
        id: 3,
        title: "Daily Reminders",
-       icon: "https://cdn-icons-png.flaticon.com/512/109/109613.png",
+         icon: "https://static-00.iconduck.com/assets.00/clock-icon-2048x2048-o0dud9zx.png",
        target: "Mental Health",
        route: "DailyReminders",
      },
@@ -48,32 +63,43 @@ const Settings = () => {
     router.push("/login");
   };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: themeStyles.BackgroundStyle.backgroundColor }}>
       <ScreenHeaderBtn />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, padding: SIZES.medium }}>
-          <View style={{ width: "100%" }} testID="userDetails">
+                  <View style={{ width: "100%", borderBottomWidth: 5, marginTop: 10, borderBlockColor: themeStyles.TextStyle.color }} testID="userDetails">
+            <Text
+                style={{
+                    fontFamily: FONT.bold,
+                    fontSize: SIZES.xLarge,
+                    color: themeStyles.TextStyle.color,
+                    alignSelf: "center",
+                    marginTop: 2,
+                              borderBottomWidth: 5,
+                    borderBlockColor: themeStyles.TextStyle.color
+                }}
+            >
+                User Profile
+            </Text>
             {userDetails && (
               <Text
                 style={{
-                  fontFamily: FONT.regular,
+                  fontFamily: FONT.bold,
                   fontSize: SIZES.large,
-                  color: COLORS.secondary,
+                                  color: themeStyles.TextStyle.color,
+                                  alignSelf: "center",
+                                  marginBottom: 10,
+                                  padding: 8,
+                                  marginTop: 10,
+                                  borderWidth: 2,
+                                  borderRadius: 50,
+                                  background: themeStyles.BackgroundStyle.lightBackground,
+                                  borderColor: themeStyles.TextStyle.color,
                 }}
               >
-                Hello {JSON.parse(userDetails).userName}!
+                {JSON.parse(userDetails).userName}
               </Text>
             )}
-            <Text
-              style={{
-                fontFamily: FONT.bold,
-                fontSize: SIZES.xLarge,
-                color: COLORS.primary,
-                marginTop: 2,
-              }}
-            >
-              Would you like to change any settings?
-            </Text>
           </View>
           {settings.map((setting) => (
   <TouchableOpacity
@@ -84,8 +110,9 @@ const Settings = () => {
       alignItems: "center",
       flexDirection: "row",
       padding: SIZES.medium,
-      borderRadius: SIZES.small,
-      backgroundColor: "#FFF",
+        borderRadius: SIZES.small,
+      borderColor: themeStyles.TextStyle.color,
+      backgroundColor: themeStyles.BackgroundStyle.lightBackground,
       ...SHADOWS.medium,
       shadowColor: COLORS.white,
       marginVertical: SIZES.small,
@@ -96,7 +123,7 @@ const Settings = () => {
       style={{
         width: 50,
         height: 50,
-        backgroundColor: COLORS.white,
+        backgroundColor: themeStyles.BackgroundStyle.lightBackground,
         borderRadius: SIZES.medium,
         justifyContent: "center",
         alignItems: "center",
@@ -113,7 +140,7 @@ const Settings = () => {
         style={{
           fontSize: SIZES.medium,
           fontFamily: "DMBold",
-          color: COLORS.primary,
+          color: themeStyles.TextStyle.color,
         }}
         numberOfLines={1}
       >
@@ -130,7 +157,7 @@ const Settings = () => {
     flexDirection: "row",
     padding: SIZES.medium,
     borderRadius: SIZES.small,
-    backgroundColor: "#FFC0CB",
+    backgroundColor: themeStyles.BackgroundStyle.lightBackground,
     ...SHADOWS.medium,
     shadowColor: COLORS.white,
     marginVertical: SIZES.small,
@@ -141,7 +168,7 @@ const Settings = () => {
     style={{
       width: 50,
       height: 50,
-      backgroundColor: COLORS.white,
+      backgroundColor: themeStyles.BackgroundStyle.lightBackground,
       borderRadius: SIZES.medium,
       justifyContent: "center",
       alignItems: "center",
@@ -166,7 +193,7 @@ const Settings = () => {
       style={{
         fontSize: SIZES.medium,
         fontFamily: "DMBold",
-        color: COLORS.primary,
+        color: themeStyles.TextStyle.color,
       }}
       numberOfLines={1}
     >

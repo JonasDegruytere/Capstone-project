@@ -2,23 +2,23 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { COLORS, FONT, SIZES } from "../constants/theme";
 
-const getThemeStyles = (isDark) => ({
+const getThemeStyles = (isDarkMode) => ({
 
   userName: {
-    color: isDark ? COLORS.lightWhite : COLORS.darkText,
+    color: isDarkMode ? COLORS.lightText : COLORS.darkText,
   },
   welcomeMessage: {
-    color: isDark ? COLORS.lightText : COLORS.darkText,
-  }
+    color: isDarkMode ? COLORS.lightText : COLORS.darkText,
+    }
 
 });
 
-const Welcome = ({ userDetails, isDark }) => {
-  const themeStyles = getThemeStyles(isDark);
+const Welcome = ({ userDetails, isDarkMode }) => {
+    const themeStyles = getThemeStyles(isDarkMode);
 
   return (
     <View>
-      <View style={[styles.container]}>
+          <View style={[styles.container, {borderColor: themeStyles.welcomeMessage.color}]}>
         <Text style={[styles.userName, themeStyles.userName]}>
           Hello {userDetails?.userName}!
         </Text>
@@ -35,7 +35,9 @@ export default Welcome;
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    padding: 10,
+        padding: 10,
+        marginBottom: 20,
+        borderBottomWidth: 1,
   },
   userName: {
     fontFamily: FONT.regular,

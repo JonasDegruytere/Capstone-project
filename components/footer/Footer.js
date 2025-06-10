@@ -3,10 +3,23 @@ import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./Footer.style";
 import { icons } from "../../constants";
+import { COLORS, FONT, SIZES, SHADOWS } from "../../constants/theme";
 
-const Footer = ({ data }) => {
+
+const getThemeStyles = (isDarkMode) => ({
+
+    TextStyle: {
+        color: isDarkMode ? COLORS.lightText : COLORS.darkText,
+    },
+    BackgroundStyle: {
+        backgroundColor: isDarkMode ? COLORS.darkBackground : COLORS.lightBackground,
+        lightBackground: isDarkMode ? COLORS.lightDarkBackground : COLORS.lightWhiteBackground,
+    }
+});
+
+const Footer = ({ data, isDarkMode }) => {
     const [isFavorite, setIsFavorite] = useState(false);
-
+    const themeStyles = getThemeStyles(isDarkMode);
     const checkIfFavorite = async () => {
         try {
             const favorites = await AsyncStorage.getItem("favorites");
@@ -39,8 +52,8 @@ const Footer = ({ data }) => {
     };
 
     return (
-    <View style={styles.container}>
-        <TouchableOpacity style={styles.likeBtn} onPress={handleFavoriteToggle}>
+        <View style={[styles.container, { backgroundColor: themeStyles.BackgroundStyle.lightBackground }]}>
+            <TouchableOpacity style={[styles.likeBtn]} onPress={handleFavoriteToggle}>
         <Image
             source={isFavorite ? icons.heartFilled : icons.heartOutline}
             resizeMode="contain"
@@ -52,7 +65,7 @@ const Footer = ({ data }) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.applyBtn} onPress={handleFavoriteToggle}>
-        <Text style={styles.applyBtnText}>
+                <Text style={[styles.applyBtnText, {color: themeStyles.TextStyle.color}]}>
             {isFavorite ? "Remove from favorites" : "Add to favorites"}
         </Text>
         </TouchableOpacity>

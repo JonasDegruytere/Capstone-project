@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center', 
     paddingHorizontal: 10, 
-    width: '100vw', 
+        width: '100vw',
+    marginTop: 20,
     },
     image: {
     width: 30, 
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     btnContainer: {
     width: 40,
     height: 40,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.gray2,
     borderRadius: SIZES.small / 1.25,
     justifyContent: "center",
     alignItems: "center",
