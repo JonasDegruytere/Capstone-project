@@ -2,11 +2,14 @@
   "name": "meditation-app",
   "version": "1.0.0",
   "main": "App.js",
+  "homepage": "https://jonasdegruytere.github.io/Capstone-project/",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "deploy": "gh-pages -d dist",
+    "predeploy": "expo export --platform web"
   },
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
@@ -35,7 +38,8 @@
     "react-native-web": "~0.19.10"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "gh-pages": "^6.3.0"
   },
   "private": true
 }
