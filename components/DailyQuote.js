@@ -11,16 +11,24 @@ const getThemeStyles = (isDarkMode) => ({
 
 const DailyQuote = ({ isDarkMode }) => {
     const [quote, setQuote] = useState('');
+    const [author, setAuthor] = useState('')
     const [loading, setLoading] = useState(false);
     const themeStyles = getThemeStyles(isDarkMode);
 
     const fetchQuote = async () => {
         setLoading(true);
         try {
-            const response = await fetch('https://dummyjson.com/quotes/random');
+            const response = await fetch('https://api.realinspire.live/v1/quotes/random', {
+                method: "GET",
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
             if (response.ok) {
             const data = await response.json();
-            setQuote(data.quote);
+                setQuote(data[0].content);
+                setAuthor(data[0].author);
             } else {
             console.error('Error fetching quote:', response.status);
             }
@@ -42,7 +50,7 @@ const DailyQuote = ({ isDarkMode }) => {
             ) : (
             <>
                         <Text style={[styles.quoteText, { color: themeStyles.QuoteStyle.color }]}>
-                            "{quote}"
+                            "{quote}" - "{author}"
                         </Text>
             </>
             )}

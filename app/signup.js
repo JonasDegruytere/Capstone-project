@@ -12,6 +12,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack, useRouter } from "expo-router";
 import { COLORS, icons, SHADOWS } from "../constants";
 
+function validateEmail(email) {
+    const pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return pattern.test(email);
+}
+
 const SignUp = () => {
     const [userName, setUserName] = useState("");
     const [email, setEmail] = useState("");
@@ -20,8 +25,14 @@ const SignUp = () => {
 
     const handleRegister = async () => {
         if (!userName || !email || !password) {
-          Alert.alert("Validation Error", "Please fill in all fields.");
-          return;
+            Alert.alert("Validation Error", "Please fill in all fields.");
+            alert("Please fill in all fields.");
+            return;
+        }
+        if (!validateEmail(email)) {
+            Alert.alert("Validation Error", "Please enter a valid email.");
+            alert("Please enter a valid email.");
+            return;
         }
     
         const userDetails = { userName, email,password, token: "sample-token" };

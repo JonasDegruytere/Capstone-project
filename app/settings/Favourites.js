@@ -13,6 +13,7 @@ import DailyMeditation from "../../components/DailyMeditation";
 import { useFocusEffect } from "expo-router";
 import ScreenHeaderBtn from '../../components/ScreenHeaderBtn';
 import { useTheme } from "../../context/ThemeProvider";
+import { useRouter } from "expo-router";
 
 const getThemeStyles = (isDarkMode) => ({
 
@@ -29,6 +30,8 @@ const getThemeStyles = (isDarkMode) => ({
 const Favourites = () => {
     const [favorites, setFavorites] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [userDetails, setUserDetails] = useState(null);
+    const router = useRouter();
 
     const { theme } = useTheme();
     const isDarkMode = theme === "dark";
@@ -47,9 +50,19 @@ const Favourites = () => {
         }
     };
 
+    const loadUserDetails = async () => {
+        const user = await AsyncStorage.getItem("userDetails");
+        if (!user) {
+            router.push("/login")
+            return;
+        }
+        setUserDetails(user);
+    };
+
     useFocusEffect(
     React.useCallback(() => {
         loadFavorites();
+        loadUserDetails();
         }, [])
     );
 return(

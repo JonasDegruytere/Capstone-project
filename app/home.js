@@ -8,19 +8,25 @@ import PopularMeditation from "../components/PopularMeditation";
 import DailyMeditation from "../components/DailyMeditation";
 import { useTheme } from "../context/ThemeProvider";
 import DailyQuote from "../components/DailyQuote";
+import { useRouter } from "expo-router";
 
 const Home = () => {
     const [userDetails, setUserDetails] = useState(null);
     const { theme, toggleTheme } = useTheme();
     const isDarkMode = theme === "dark";
+    const router = useRouter();
 
   useEffect(() => {
     loadUserDetails();
   }, []);
 
   const loadUserDetails = async () => {
-    const user = await AsyncStorage.getItem("userDetails");
-    setUserDetails(user);
+      const user = await AsyncStorage.getItem("userDetails");
+      if (!user) {
+          router.push("/login")
+          return;
+      }
+      setUserDetails(user);
   };
 
     return (

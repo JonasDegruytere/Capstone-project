@@ -1,17 +1,32 @@
 import { Text, SafeAreaView } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Stack } from "expo-router";
 import { COLORS, SHADOWS, SIZES } from "../../constants";
 import { useTheme } from "../../context/ThemeProvider";
 import { Switch, View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import ScreenHeaderBtn from "../../components/ScreenHeaderBtn";
+import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const ThemeChange = () => {
-    console.log("hello from themechange");
-
     const { theme, toggleTheme } = useTheme();
-    console.log('theme',theme);
+    const router = useRouter();
+    const [userDetails, setUserDetails] = useState(null);
+
+    useEffect(() => {
+        loadUserDetails();
+    }, []);
+
+    const loadUserDetails = async () => {
+        const user = await AsyncStorage.getItem("userDetails");
+        if (!user) {
+            router.push("/login")
+            return;
+        }
+        setUserDetails(user ? JSON.parse(user) : {});
+    };
 
     const isDarkMode = theme === "dark";
 

@@ -1,5 +1,5 @@
 import { Stack, useGlobalSearchParams, useRouter } from "expo-router";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -22,6 +22,7 @@ import ScreenHeaderBtn from '../../components/ScreenHeaderBtn';
 import { COLORS, icons, SIZES } from "../../constants";
 import useFetch from "../../hook/useFetch";
 import { useTheme } from "../../context/ThemeProvider";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
@@ -54,6 +55,25 @@ const MeditationDetails = () => {
     const isDarkMode = theme === "dark";
     const themeStyles = getThemeStyles(isDarkMode);
 
+    const [userDetails, setUserDetails] = useState(null);
+    const router = useRouter();
+
+    const loadUserDetails = async () => {
+        const user = await AsyncStorage.getItem("userDetails");
+        if (!user) {
+            router.push("/login")
+            return;
+        }
+        setUserDetails(user);
+    };
+
+    useEffect(() => {
+        loadUserDetails();
+    }, []);
+
+
+
+
       const onRefresh = useCallback(() => {
         setRefreshing(true);
         refetch();
@@ -77,7 +97,7 @@ const MeditationDetails = () => {
                     <View style={[styles.pointsContainer, {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]}>
                 {(meditationItem.instructions ?? ["N/A"]).map((item, index) => (
                     <View style={styles.pointWrapper} key={index}>
-                    <View style={styles.pointDot} />
+                        <View style={[styles.pointDot, {color: themeStyles.TextStyle.color}]} />
                         <Text style={[styles.pointText, {color: themeStyles.TextStyle.color}]}>{item}</Text>
                     </View>
                 ))}

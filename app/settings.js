@@ -46,19 +46,43 @@ const Settings = () => {
          icon: "https://static-00.iconduck.com/assets.00/clock-icon-2048x2048-o0dud9zx.png",
        target: "Mental Health",
        route: "DailyReminders",
-     },
+    },
+    {
+        id: 4,
+        title: "Account Statistics",
+        icon: "https://static-00.iconduck.com/assets.00/clock-icon-2048x2048-o0dud9zx.png",
+        target: "Mental Health",
+        route: "DailyReminders",
+    },
+    {
+        id: 5,
+        title: "Change Account Credentials",
+        icon: "https://static-00.iconduck.com/assets.00/clock-icon-2048x2048-o0dud9zx.png",
+        target: "Mental Health",
+        route: "DailyReminders",
+    },
+    {
+        id: 6,
+        title: "Logout",
+        icon: "https://static-00.iconduck.com/assets.00/clock-icon-2048x2048-o0dud9zx.png",
+        target: "Mental Health",
+        route: "DailyReminders",
+    },
    ];
 
    const loadUserDetails = async () => {
     const user = await AsyncStorage.getItem("userDetails");
-    console.log("user", user);
+    if (!user) {
+        router.push("/login")
+        return;
+    }
     setUserDetails(user);
   };
 
   useEffect(() => {
     loadUserDetails();
   }, []);
-  const handleLogout = async () => {
+  const handleAcountDelete = async () => {
     await AsyncStorage.removeItem("userDetails");
     router.push("/login");
   };
@@ -157,12 +181,12 @@ const Settings = () => {
     flexDirection: "row",
     padding: SIZES.medium,
     borderRadius: SIZES.small,
-    backgroundColor: themeStyles.BackgroundStyle.lightBackground,
+    backgroundColor: "#ff2c2c",
     ...SHADOWS.medium,
     shadowColor: COLORS.white,
     marginVertical: SIZES.small,
   }}
-  onPress={handleLogout}
+  onPress={handleAcountDelete}
 >
   <View
     style={{
@@ -197,7 +221,7 @@ const Settings = () => {
       }}
       numberOfLines={1}
     >
-      Logout
+      Delete Account
     </Text>
   </View>
 </TouchableOpacity>

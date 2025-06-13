@@ -11,6 +11,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { COLORS, SIZES } from "../../constants";
 import { useTheme } from "../../context/ThemeProvider";
 import ScreenHeaderBtn from "../../components/ScreenHeaderBtn";
+import { useRouter } from "expo-router";
 
 
 const getThemeStyles = (isDarkMode) => ({
@@ -35,6 +36,7 @@ const DailyReminders = () => {
     const [manualTime, setManualTime] = useState("");
     const [userDetails, setUserDetails] = useState(null);
     const themeStyles = getThemeStyles(isDarkMode);
+    const router = useRouter();
 
     const requestPermissions = async () => {
         const { status } = await Notifications.requestPermissionsAsync();
@@ -50,7 +52,11 @@ const DailyReminders = () => {
       }, []);
 
       const loadUserDetails = async () => {
-        const user = await AsyncStorage.getItem("userDetails");
+          const user = await AsyncStorage.getItem("userDetails");
+          if (!user) {
+              router.push("/login")
+              return;
+          }
         setUserDetails(user ? JSON.parse(user) : {});
       };
       const loadReminders = async () => {

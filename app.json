@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "meditation-app",
+    "name": "Placidus",
     "slug": "meditation-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -29,11 +29,12 @@
     },
     "web": {
       "scheme": "meditationapp",
-      "publicPath": "./"
+      "publicPath": "./",
+      "favicon": "./assets/favicon.png"
     },
     "experiments": {
       "scheme": "meditationapp",
-      "baseUrl": "./"
+      "baseUrl": "/Capstone-project/"
     }
   }
 }
