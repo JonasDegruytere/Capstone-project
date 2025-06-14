@@ -18,6 +18,7 @@ const Login = () => {
         const userDetails = { email, password, token: "sample-token" };
 
         console.log('userDetails', userDetails);
+        console.log(AsyncStorage.getAllKeys())
 
         try {
         const detailsDatafromSignup = await AsyncStorage.getItem("userDetails");

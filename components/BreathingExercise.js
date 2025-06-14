@@ -25,22 +25,18 @@ const getThemeStyles = (isDarkMode) => ({
 });
 
 
-const PopularMeditation = ({ isDarkMode }) => {
+const BreathingExercise = ({ isDarkMode }) => {
     const router = useRouter();
-    const { data, isLoading, error } = useFetch("search", {
-      query: "React developer",
-      num_pages: "1",
-    });
-  
-    const [selectedMeditation, setselectedMeditation] = useState();
+    const { breathingExercises, isLoading, error } = useFetch("search");
+    const [selectedBreathing, setselectedBreathing] = useState();
     const themeStyles = getThemeStyles(isDarkMode);
 
     const renderMeditationCard = ({ item }) => (
         <TouchableOpacity
-            style={[styles.container(selectedMeditation, item), {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]}
+            style={[styles.container(selectedBreathing, item), {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]}
           onPress={() => handleCardPress(item)}
         >
-          <TouchableOpacity style={styles.logoContainer(selectedMeditation, item)}>
+          <TouchableOpacity style={styles.logoContainer(selectedBreathing, item)}>
             <Image
               source={{ uri: item?.image }}
               resizeMode="cover"
@@ -55,13 +51,13 @@ const PopularMeditation = ({ isDarkMode }) => {
     
             <View style={[styles.infoContainer, { color: themeStyles.TextStyle.color }]}>
             <Text
-                    style={[styles.meditationName(selectedMeditation, item), { color: themeStyles.TextStyle.color }]}
+                    style={[styles.meditationName(selectedBreathing, item), { color: themeStyles.TextStyle.color }]}
               numberOfLines={1}
             >
               {item.title}
             </Text>
             <View style={styles.infoWrapper}>
-                    <Text style={[styles.publisher(selectedMeditation, item), { color: themeStyles.TextStyle.color }]}>
+                    <Text style={[styles.publisher(selectedBreathing, item), { color: themeStyles.TextStyle.color }]}>
                 {item?.shortDescription}
               </Text>
             </View>
@@ -72,14 +68,14 @@ const PopularMeditation = ({ isDarkMode }) => {
 
     const handleCardPress = (item) => {
         router.push(`/meditation-details/${item.id}`);
-        setselectedMeditation(item.id);
+        setselectedBreathing(item.id);
     };
   
    return(
     <>
         <View style={styles.container} testID="popularContainer">
                <View style={[styles.header, {borderColor: themeStyles.TextStyle.color}]} testID="popularHeader">
-                   <Text style={[styles.headerTitle, {color: themeStyles.TextStyle.color}]}>Popular Exercises</Text>
+                   <Text style={[styles.headerTitle, {color: themeStyles.TextStyle.color}]}>Breathing Exercises</Text>
                 <TouchableOpacity></TouchableOpacity>
             </View>
         </View>
@@ -90,7 +86,7 @@ const PopularMeditation = ({ isDarkMode }) => {
                 <Text>Something went wrong</Text>
                 ) : (
                 <FlatList
-                    data={data}
+                    data={breathingExercises}
                     keyExtractor={(item) => item.id}
                     renderItem={renderMeditationCard}
                     contentContainerStyle={{ columnGap: SIZES.medium }}
@@ -104,13 +100,13 @@ const PopularMeditation = ({ isDarkMode }) => {
 
 const styles = StyleSheet.create({
 
-    container: (selectedMeditation, item) => ({
+    container: (selectedBreathing, item) => ({
       width: 270,
       padding: SIZES.xLarge,
       marginHorizontal: SIZES.small,
       marginTop: SIZES.xLarge, 
       marginBottom: SIZES.xLarge,
-      backgroundColor: selectedMeditation === item.id ? COLORS.primary : "#FFF",
+      backgroundColor: selectedBreathing === item.id ? COLORS.primary : "#FFF",
       borderRadius: SIZES.medium,
       justifyContent: "space-between",
       ...SHADOWS.medium,
@@ -139,7 +135,7 @@ const styles = StyleSheet.create({
       marginTop: SIZES.medium,
     },
 
-    logoContainer: (selectedMeditation, item) => ({
+    logoContainer: (selectedBreathing, item) => ({
       width: "100%",
       height: 140,
       borderRadius: SIZES.medium,
@@ -173,10 +169,10 @@ const styles = StyleSheet.create({
     infoContainer: {
       marginTop: SIZES.large,
     },
-    meditationName: (selectedMeditation, item) => ({
+    meditationName: (selectedBreathing, item) => ({
       fontSize: SIZES.large,
       fontFamily: FONT.medium,
-      color: selectedMeditation === item.id ? COLORS.white : COLORS.primary,
+      color: selectedBreathing === item.id ? COLORS.white : COLORS.primary,
     }),
     infoWrapper: {
       flexDirection: "row",
@@ -184,10 +180,10 @@ const styles = StyleSheet.create({
       justifyContent: "flex-start",
       alignItems: "center",
     },
-    publisher: (selectedMeditation, item) => ({
+    publisher: (selectedBreathing, item) => ({
       fontSize: SIZES.medium - 2,
       fontFamily: FONT.regular,
-      color: selectedMeditation === item.id ? COLORS.white : COLORS.primary,
+      color: selectedBreathing === item.id ? COLORS.white : COLORS.primary,
     }),
     location: {
       fontSize: SIZES.medium - 2,
@@ -197,4 +193,4 @@ const styles = StyleSheet.create({
     },
   });
   
-export default PopularMeditation;
+export default BreathingExercise;

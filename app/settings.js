@@ -50,24 +50,17 @@ const Settings = () => {
     {
         id: 4,
         title: "Account Statistics",
-        icon: "https://static-00.iconduck.com/assets.00/clock-icon-2048x2048-o0dud9zx.png",
+        icon: "https://static-00.iconduck.com/assets.00/stats-icon-2048x2048-po60mvco.png",
         target: "Mental Health",
-        route: "DailyReminders",
+        route: "Statistics",
     },
     {
         id: 5,
         title: "Change Account Credentials",
-        icon: "https://static-00.iconduck.com/assets.00/clock-icon-2048x2048-o0dud9zx.png",
+        icon: "https://icons.veryicon.com/png/o/miscellaneous/itsm-management/change-2.png",
         target: "Mental Health",
-        route: "DailyReminders",
-    },
-    {
-        id: 6,
-        title: "Logout",
-        icon: "https://static-00.iconduck.com/assets.00/clock-icon-2048x2048-o0dud9zx.png",
-        target: "Mental Health",
-        route: "DailyReminders",
-    },
+        route: "Credentials",
+        },
    ];
 
    const loadUserDetails = async () => {
@@ -85,7 +78,12 @@ const Settings = () => {
   const handleAcountDelete = async () => {
     await AsyncStorage.removeItem("userDetails");
     router.push("/login");
-  };
+    };
+
+    const handleLogout = async () => {
+        localStorage.clear();
+        router.push("/login");
+    };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: themeStyles.BackgroundStyle.backgroundColor }}>
       <ScreenHeaderBtn />
@@ -172,7 +170,59 @@ const Settings = () => {
       </Text>
     </View>
   </TouchableOpacity>
-))}
+          ))}
+                  <TouchableOpacity
+                      style={{
+                          flex: 1,
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          flexDirection: "row",
+                          padding: SIZES.medium,
+                          borderRadius: SIZES.small,
+                          backgroundColor: themeStyles.BackgroundStyle.lightBackground,
+                          ...SHADOWS.medium,
+                          shadowColor: COLORS.white,
+                          marginVertical: SIZES.small,
+                      }}
+                      onPress={handleLogout}
+                  >
+                      <View
+                          style={{
+                              width: 50,
+                              height: 50,
+                              backgroundColor: themeStyles.BackgroundStyle.lightBackground,
+                              borderRadius: SIZES.medium,
+                              justifyContent: "center",
+                              alignItems: "center",
+                          }}
+                      >
+                          <Image
+                              source={icons.exit}
+                              resizeMode="cover"
+                              style={{
+                                  width: "70%",
+                                  height: "70%",
+                              }}
+                          />
+                      </View>
+                      <View
+                          style={{
+                              flex: 1,
+                              marginHorizontal: SIZES.medium,
+                          }}
+                      >
+                          <Text
+                              style={{
+                                  fontSize: SIZES.medium,
+                                  fontFamily: "DMBold",
+                                  color: themeStyles.TextStyle.color,
+                              }}
+                              numberOfLines={1}
+                          >
+                              Logout
+                          </Text>
+                      </View>
+                  </TouchableOpacity>
 <TouchableOpacity
   style={{
     flex: 1,

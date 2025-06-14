@@ -1,10 +1,17 @@
 import { useState, useEffect } from "react";
+import { min } from "../node_modules/date-fns/min";
 
 const useFetch = () => {
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [bestMeditations, setBestMeditations] = useState([]);
+    const [data, setData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [bestMeditations, setBestMeditations] = useState([]);
+    const [breathingExercises, setBreathingExercises] = useState([]);
+    const [stressRelief, setStressRelief] = useState([]);
+    const [mindfullness, setMindfullness] = useState([]);
+    const [selfCompassion, setSelfCompassion] = useState([]);
+    const [grouding, setGrouding] = useState([]);
+
 
   const meditationData = [
     {
@@ -234,7 +241,292 @@ const useFetch = () => {
       instructions: ["Find a peaceful location where you can walk undisturbed.", "Walk slowly, focusing on each step you take.", "Notice how your feet feel as they touch the ground.", "Synchronize your breathing with your steps, inhaling for a few steps and exhaling for a few.", "Continue for 15 minutes, staying aware of your body and the present moment."]
     }
     
-  ];
+    ];
+
+    const BreathingExercises = [
+        {
+            id: 18,
+            title: "Box Breathing",
+            description: "Calms nervous system, great for anxiety or high-stress moments.",
+            duration: "5 minutes",
+            image: "https://images.unsplash.com/photo-1512438248247-f0f2a5a8b7f0?q=80&w=3483&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            target: "Calmness",
+            instructions: ["Inhale-hold-exhale-hold cycle, each for equal counts (usually 4 seconds)."]
+        },
+        {
+            id: 19,
+            title: "4-7-8 Breathing",
+            description: "A paced breathing technique to trigger the parasympathetic response. Provides anxiety relief, and improved sleep.",
+            duration: "5 minutes",
+            image: "https://images.unsplash.com/photo-1471520201477-47a62a269a87?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            target: "Sleep aid, anxiety relief.",
+            instructions: ["Inhale for 4 seconds", "Hold for 7", "Exhale for 8. Best done for 4–8 cycles."]
+        },
+        {
+            id: 20,
+            title: "Nadi Shodhana",
+            description: "Yogic breathing balancing left and right hemispheres. Alternative nostril breathing to calm and balance your mind.",
+            duration: "5 minutes",
+            image: "https://plus.unsplash.com/premium_photo-1686255006386-5f58b00ffe9d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YmFja2dyb3VuZHxlbnwwfHwwfHx8MA%3D%3D",
+            target: "Balancing, focus, calming anxiety.",
+            instructions: ["Close right nostril", "Inhale left", "Close left", "Exhale right", "Inhale right", "Close right", "Exhale left.", "Repeat"]
+        },
+        {
+            id: 21,
+            title: "Diaphragmatic Breathing",
+            description: "Breathing deeply into the belly rather than shallow chest breathing.",
+            duration: "5 minutes",
+            image: "https://images.unsplash.com/photo-1476820865390-c52aeebb9891?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            target: "Stress regulation, grounding.",
+            instructions: ["Hand on stomach", "inhale to expand belly", "exhale slowly. Count to slow down"]
+        },
+        {
+            id: 22,
+            title: "Coherent Breathing",
+            description: "Regulates heart rate variability, promotes calm focus by breathing at a steady rate of ~5 breaths per minute.",
+            duration: "5 minutes",
+            image: "https://images.unsplash.com/photo-1692356573087-00b545ac4694?q=80&w=3054&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            target: "Calmness",
+            instructions: ["Inhale for 5–6 seconds", "Exhale for 5–6", "Keep repeating this pattern for 5 minutes"]
+        },
+        {
+            id: 23,
+            title: "Pursed-Lip Breathing",
+            description: "Slows exhalation and increases oxygen exchange.",
+            duration: "5 minutes",
+            image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fG5hdHVyZSUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D",
+            target: "Panic attack management, reduce stress",
+            instructions: ["Inhale through nose for 2–4 seconds", "Exhale through pursed lips for 4–6."]
+        },
+    ];
+
+    const StressRelief = [
+        {
+            id: 24,
+            title: "Progressive Muscle Relaxation",
+            description: "Tensing and releasing muscle groups to release tension.",
+            duration: "8 minutes",
+            image: "https://images.unsplash.com/photo-1675371788315-60fa0ef48267?q=80&w=3860&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            target: "reduce stress, muscle tension",
+            instructions: ["Starting from feet to head, tense each muscle group for 5–10 seconds", "then release."]
+        },
+        {
+            id: 25,
+            title: "Expressive Writing",
+            description: "Writing freely about your thoughts or emotions for a set time.",
+            duration: "20 minutes",
+            image: "https://images.unsplash.com/photo-1625054790108-6a5fb0c174af?q=80&w=3008&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            target: "Clarifies thoughts, and emotions",
+            instructions: ["Choose your favourite writing medium", "Let your mind wander, and write down your thoughts", "Try to be uninterrupted, and fre from judgement during your writing"]
+        },
+        {
+            id: 26,
+            title: "Visualization",
+            description: "Mentally transporting yourself to a calming or safe place.",
+            duration: "10 minutes",
+            image: "https://images.unsplash.com/photo-1539634262233-7c0b48ab9503?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzF8fG5hdHVyZSUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D",
+            target: "Enhanced sleep, calmness",
+            instructions: ["Close your eyes", "Imagine a peaceful, calm setting in rich detail", "Try to explore it with your senses, imagine the smell, feel, and sounds"]
+        },
+        {
+            id: 27,
+            title: "Laughter Therapy",
+            description: "Using comedy or intentional laughter to release endorphins.",
+            duration: "5-15 minutes",
+            image: "https://images.unsplash.com/photo-1505142468610-359e7d316be0?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzh8fG5hdHVyZSUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D",
+            target: "tension release, social bonding.",
+            instructions: ["Watch a comedy show", "Hang out with friends", "You can even fake laugh until it becomes genuine"]
+        },
+        {
+            id: 28,
+            title: "Timeboxing",
+            description: "Scheduling work/rest periods to reduce cognitive overload.",
+            duration: "5-10 minutes",
+            image: "https://images.unsplash.com/photo-1570641963303-92ce4845ed4c?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTV8fG5hdHVyZSUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D",
+            target: "Reduces mental fatigue and decision anxiety.",
+            instructions: ["Set a timer during your work", "When the timer goes off, take a break for 5-10 minutes to relax your mind"]
+        },
+        {
+            id: 29,
+            title: "Aromatherapy",
+            description: "Using scent to engage the limbic system and reduce stress.",
+            duration: "2 minutes",
+            image: "https://images.unsplash.com/photo-1566479509606-8dc829d87998?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Njd8fG5hdHVyZSUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D",
+            target: "sensory stress relief.",
+            instructions: ["Inhale essential oils like lavender, bergamot, or frankincense via diffuser or tissue."]
+        },
+    ];
+
+    const Mindfullness = [
+        {
+            id: 30,
+            title: "Senses Check-in",
+            description: "Grounding yourself by observing sensory input of all of your five senses.",
+            duration: "3 minutes",
+            image: "https://images.unsplash.com/photo-1531933046417-48eda63717b9?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjJ8fG1lZGl0YXRpb258ZW58MHx8MHx8fDA%3D",
+            target: "mindfulness and awareness",
+            instructions: ["Ask yourself the following questions", "What can I see?", "What can I hear?", "What can I taste?", "What can I feel?", "What can I smell?"]
+        },
+        {
+            id: 31,
+            title: "STOP Technique",
+            description: "A mini-check-in to pause your automatic thoughts.",
+            duration: "1 minute",
+            image: "https://images.unsplash.com/photo-1526779259212-939e64788e3c?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fG1lZGl0YXRpb258ZW58MHx8MHx8fDA%3D",
+            target: "Cognitive diffusion",
+            instructions: ["Randomly during the day do the following:", "STOP", "Take a deep breath", "Observe your thoughts, feelings, and body", "Proceed mindfully"]
+        },
+        {
+            id: 32,
+            title: "Self-Inquiry Journal",
+            description: "Start a reflective questionnaire on current experience by journalling.",
+            duration: "5 minutes",
+            image: "https://images.unsplash.com/photo-1489659639091-8b687bc4386e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDR8fG1lZGl0YXRpb258ZW58MHx8MHx8fDA%3D",
+            target: "emotional clarity, self-awareness",
+            instructions: ["Ask yourself daily prompts, and write down the answer", "Examples could be: What am I feeling? What’s driving it? What do I need?"]
+        },
+        {
+            id: 33,
+            title: "Automatic Thought Record",
+            description: "Identifies and examines irrational or distressing thoughts.",
+            duration: "8 minutes",
+            image: "https://images.unsplash.com/photo-1557652941-43892b86cd93?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTV8fG1lZGl0YXRpb258ZW58MHx8MHx8fDA%3D",
+            target: "Cognitive restructuring",
+            instructions: ["At the end of the day, think about events or thoughts that distressed you; Analyse them through inquiry", "Example questions could be: What happened? What did I feel? What did I think? What's the evidence for/against?"]
+        },
+        {
+            id: 34,
+            title: "RAIN Technique",
+            description: "A mindfulness-based self-compassion inquiry.",
+            duration: "10 minutes",
+            image: "https://plus.unsplash.com/premium_photo-1725983651120-ede8d2701fc7?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjF8fG1lZGl0YXRpb258ZW58MHx8MHx8fDA%3D",
+            target: "Self-awareness, emotional healing.",
+            instructions: ["Use the RAIN steps when you are feeling overwhelmed", "Recognize", "Allow", "Investigate", "Nurture"]
+        },
+        {
+            id: 35,
+            title: "Three-Minute Breathing Space",
+            description: "A structured mindfulness break.",
+            duration: "3 minutes",
+            image: "https://images.unsplash.com/photo-1554067559-269708c83fb6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzB8fG1lZGl0YXRpb258ZW58MHx8MHx8fDA%3D",
+            target: "Refocus your mind",
+            instructions: ["Spend one minute doing each of these mindstates", "Be aware of your thoughts/body.", "Focus on your breath", "Expand your awareness"]
+        },
+    ];
+
+    const SelfCompassion = [
+        {
+            id: 36,
+            title: "Letter to Yourself",
+            description: "Write a letter from a kind friend’s voice to yourself.",
+            duration: "15 minutes",
+            image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d3JpdGluZ3xlbnwwfHwwfHx8MA%3D%3D",
+            target: "Reduces self-judgment, builds self-support.",
+            instructions: ["Write down your struggles", "Respond to them with empathy, understanding, and encouragement"]
+        },
+        {
+            id: 37,
+            title: "Identifying the Inner Critic",
+            description: "Map your inner critical voice, to defuse and understand your inner mental state.",
+            duration: "5 minutes",
+            image: "https://images.unsplash.com/photo-1505682634904-d7c8d95cdc50?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHdyaXRpbmd8ZW58MHx8MHx8fDA%3D",
+            target: "Externalize, and defuse inner criticism",
+            instructions: ["Analyze your inner critical voice", "What does it say?", "Whose voice is it?", "What's its tone?", "What does it fear?"]
+        },
+        {
+            id: 38,
+            title: "Self-Compassion Break",
+            description: "Mini intervention to activate self-kindness.",
+            duration: "5 minutes",
+            image: "https://images.unsplash.com/photo-1566741716102-6d46d7e6d859?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2FsbSUyMHdyaXRpbmd8ZW58MHx8MHx8fDA%3D",
+            target: "Self-soothing",
+            instructions: ["Acknowledge your pain", "Recognize it’s part of humanity", "Say something kind to yourself."]
+        },
+        {
+            id: 39,
+            title: "Rewriting Inner Dialogue",
+            description: "Transforming self-critical thoughts, and rewrite your thought patterns.",
+            duration: "1 minute",
+            image: "https://images.unsplash.com/photo-1660915557736-fc91b778e1fd?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNhbG0lMjB3cml0aW5nfGVufDB8fDB8fHww",
+            target: "Transform your thoughts",
+            instructions: ["Recognize when you are diminishing towards yourself ex:I’m such an idiot", "Rewrite this into something more reasonable ex: I made a mistake, but I’m learning"]
+        },
+        {
+            id: 40,
+            title: "Role Play",
+            description: "A Gestalt technique where you switch between 'self' and 'critic.'",
+            duration: "5-10 minutes",
+            image: "https://plus.unsplash.com/premium_photo-1665990292585-6a39c5229bc8?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8dGhlcmFweXxlbnwwfHwwfHx8MA%3D%3D",
+            target: "Clarifies internal dynamics",
+            instructions: ["Place two chairs", "voice the critic from one", "respond from the other."]
+        },
+        {
+            id: 41,
+            title: "Mirror Compassion",
+            description: "Practice saying kind phrases to yourself in a mirror.",
+            duration: "2 minutes",
+            image: "https://images.unsplash.com/photo-1507537362848-9c7e70b7b5c1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHRoZXJhcHl8ZW58MHx8MHx8fDA%3D",
+            target: "embodied compassion",
+            instructions: ["Voice affirmations towards yourself like “You’re doing your best” while looking at yourself."]
+        },
+    ];
+
+    const Grouding = [
+        {
+            id: 42,
+            title: "5-4-3-2-1 Grounding",
+            description: "Use your senses to anchor yourself to the present.",
+            duration: "5 minutes",
+            image: "https://images.unsplash.com/photo-1527137342181-19aab11a8ee8?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHRoZXJhcHl8ZW58MHx8MHx8fDA%3D",
+            target: "Anxiety or dissociation interruption",
+            instructions: ["List 5 things you see", "List 4 things you hear", "List 3 things you smell", "List 2 things you feel", "List 1 thing you taste", "Alternate the order of senses from day to day"]
+        },
+        {
+            id: 43,
+            title: "Cold Water",
+            description: "Engages the vagus nerve and body shock to reset the system by using cold temperatures.",
+            duration: "3 minutes",
+            image: "https://images.unsplash.com/photo-1606274741559-d322810275c4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fG1lbnRhbHxlbnwwfHwwfHx8MA%3D%3D",
+            target: "Stop Panic, racing thoughts",
+            instructions: ["Choose an option that works best for you", "Hold ice cubes in your hands", "Splash cold water on your face", "Use a cold compresses."]
+        },
+        {
+            id: 44,
+            title: "Deep Pressure",
+            description: "Applies gentle pressure to activate parasympathetic system.",
+            duration: "At least 15 minutes",
+            image: "https://images.unsplash.com/photo-1533162507191-d90c625b2640?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTF8fG1pbmR8ZW58MHx8MHx8fDA%3D",
+            target: "Trauma management, remedy sleep issues",
+            instructions: ["Use weighted blankets or lie under pressure."]
+        },
+        {
+            id: 45,
+            title: "Scent Anchoring",
+            description: "Creates associative calming through scent-memory, use a consistent calming scent when grounded.",
+            duration: "5 minutes",
+            image: "https://plus.unsplash.com/premium_photo-1689177357589-fb06fc00da07?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fG1pbmR8ZW58MHx8MHx8fDA%3D",
+            target: "Calmness",
+            instructions: ["Smell lavender, vanilla, or other soothing essential oils to calm yourself."]
+        },
+        {
+            id: 46,
+            title: "Texture Box",
+            description: "Use a kit with tactile items (fabrics, squishy toys, textures), to touch and explore different textures mindfully.",
+            duration: "5 minutes",
+            image: "https://images.unsplash.com/photo-1590552515252-3a5a1bce7bed?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjB8fG1pbmR8ZW58MHx8MHx8fDA%3D",
+            target: "Stimulates sensory awareness, reduces overwhelming emotions.",
+            instructions: ["Create a kit with soft tactile items such as fabrics, textures, or squishy toys", "When you are feeling overwhelmed touch and explore these different textures mindfully."]
+        },
+        {
+            id: 47,
+            title: "Barefoot Walking",
+            description: "Walking barefoot on grass, sand, or soil. Reconnect with nature.",
+            duration: "30-60 minutes",
+            image: "https://images.unsplash.com/photo-1601367041697-4d881519d545?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjJ8fG1pbmR8ZW58MHx8MHx8fDA%3D",
+            target: "Nature grounding",
+            instructions: ["Take a medium to long walk barefoot through grass, soil or sand terrain", "Try to feel every step, focus on the sensation"]
+        },
+    ];
 
   const fetchData = () => {
     setIsLoading(true);
@@ -244,6 +536,11 @@ const useFetch = () => {
         // Combine both arrays into one
         setData(meditationData);
         setBestMeditations(BestMeditations);
+        setBreathingExercises(BreathingExercises);
+        setStressRelief(StressRelief);
+        setMindfullness(Mindfullness);
+        setSelfCompassion(SelfCompassion);
+        setGrouding(Grouding);
         setIsLoading(false);
       }, 1000);
     } catch (error) {
@@ -264,11 +561,16 @@ const useFetch = () => {
   const getItemById = (id) => {
     const item =
       meditationData.find((meditation) => meditation.id === id) ||
-      BestMeditations.find((meditation) => meditation.id === id);
+      BestMeditations.find((meditation) => meditation.id === id) ||
+      BreathingExercises.find((meditation) => meditation.id === id) ||
+      StressRelief.find((meditation) => meditation.id === id) ||
+      Mindfullness.find((meditation) => meditation.id === id) ||
+      SelfCompassion.find((meditation) => meditation.id === id) ||
+      Grouding.find((meditation) => meditation.id === id);
     return item || null;
   };
 
-  return { data, isLoading, error, refetch, getItemById, bestMeditations };
+  return { data, isLoading, error, refetch, getItemById, bestMeditations, breathingExercises, stressRelief, mindfullness, selfCompassion, grouding };
 };
 
 export default useFetch;

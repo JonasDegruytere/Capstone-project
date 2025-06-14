@@ -9,6 +9,11 @@ import DailyMeditation from "../components/DailyMeditation";
 import { useTheme } from "../context/ThemeProvider";
 import DailyQuote from "../components/DailyQuote";
 import { useRouter } from "expo-router";
+import BreathingExercise from "../components/BreathingExercise";
+import StressReliefExercises from "../components/StressRelief";
+import MindfullnessExercises from "../components/Mindfullness";
+import SelfCompassionExercises from "../components/Selfcompassion";
+import GroudingExercise from "../components/Grounding";
 
 const Home = () => {
     const [userDetails, setUserDetails] = useState(null);
@@ -51,8 +56,13 @@ const Home = () => {
                         <Welcome userDetails={userDetails ? JSON.parse(userDetails) : null} isDarkMode={isDarkMode} />
                         <DailyQuote isDarkMode={isDarkMode}/>
                         <PopularMeditation isDarkMode={isDarkMode}/>
-                        <DailyMeditation isDarkMode={isDarkMode}/>
-</View>
+                        <DailyMeditation isDarkMode={isDarkMode} />
+                        <BreathingExercise isDarkMode={isDarkMode} />
+                        <StressReliefExercises isDarkMode={isDarkMode} />
+                        <MindfullnessExercises isDarkMode={isDarkMode} />
+                        <SelfCompassionExercises isDarkMode={isDarkMode} />
+                        <GroudingExercise isDarkMode={isDarkMode } />
+        </View>
       </ScrollView>
     </SafeAreaView>
      </>

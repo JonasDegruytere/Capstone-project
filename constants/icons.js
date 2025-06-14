@@ -6,6 +6,7 @@ import share from "../assets/icons/share.png";
 import heartFilled from "../assets/icons/heart.png";
 import settings from "../assets/icons/settings.png";
 import clock from "../assets/icons/clock.png";
+import exit from "../assets/icons/exit.png";
 export default {
   heart,
   left,
@@ -14,5 +15,6 @@ export default {
   heartFilled,
   settings,
   clock,
-  menu
+  menu,
+  exit
 };
