@@ -34,6 +34,7 @@ const DailyReminders = () => {
     const [selectedTime, setSelectedTime] = useState(new Date());
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [manualTime, setManualTime] = useState("");
+    const [notDescr, setNotDescr] = useState("");
     const [userDetails, setUserDetails] = useState(null);
     const themeStyles = getThemeStyles(isDarkMode);
     const router = useRouter();
@@ -86,7 +87,7 @@ const DailyReminders = () => {
             id: Date.now(),
             date: selectedDate,
             time: manualTime || triggerDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-            description: `Reminder: Time for your daily task!`,
+            description: notDescr, // `Reminder: Time for your daily task!`
             triggerDate: triggerDate.toISOString(),
           };
           try {
@@ -121,7 +122,7 @@ const DailyReminders = () => {
         setReminders(updatedReminders);
       };
       const Reminder = ({ item }) => (
-        <View style={styles.reminderContainer}>
+          <View style={[styles.reminderContainer, {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]}>
               <Text style={[styles.description, {color: themeStyles.TextStyle.color}]}>{item.description}</Text>
               <Text style={[styles.date, { color: themeStyles.TextStyle.color }]}>{item.date} - {item.time}</Text>
               <TouchableOpacity onPress={() => deleteReminder(item.id)} style={[styles.deleteButton, { color: themeStyles.TextStyle.color }]}>
@@ -172,7 +173,13 @@ const DailyReminders = () => {
   
                 <Text style={[styles.selected, {color: themeStyles.TextStyle.color}]}>Date: {selectedDate || "None"}</Text>
                 <Text style={[styles.selected, { color: themeStyles.TextStyle.color }]}>Time: {manualTime || selectedTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</Text>
-  
+            <TextInput
+                placeholder="(Optional) Add a short notification description"
+                value={notDescr}
+                onChangeText={setNotDescr}
+                maxLength={128}
+                style={[styles.input, { color: themeStyles.TextStyle.color }, { backgroundColor: themeStyles.BackgroundStyle.lightBackground }]}
+            />
                 <TouchableOpacity onPress={handleAddReminder} style={[styles.button, {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]}>
           <Text style={[styles.buttonText, {color: themeStyles.TextStyle.color}]}>Add Reminder</Text>
           </TouchableOpacity>

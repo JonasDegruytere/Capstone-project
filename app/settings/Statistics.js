@@ -6,9 +6,10 @@ import {
     Text,
     ActivityIndicator,
     StyleSheet,
+    Image,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { COLORS, FONT, SIZES } from "../../constants";
+import { COLORS, FONT, SIZES, SHADOWS } from "../../constants";
 import DailyMeditation from "../../components/DailyMeditation";
 import { useFocusEffect } from "expo-router";
 import ScreenHeaderBtn from '../../components/ScreenHeaderBtn';
@@ -36,6 +37,41 @@ const Statistics = () => {
     const { theme } = useTheme();
     const isDarkMode = theme === "dark";
     const themeStyles = getThemeStyles(isDarkMode);
+
+
+
+    const stats = [
+        {
+            id: 1,
+            title: "Favourites",
+            icon: "https://cdn-icons-png.flaticon.com/512/126/126472.png",
+        },
+        {
+            id: 2,
+            title: "Minutes Meditated",
+            icon: "https://cdn-icons-png.flaticon.com/512/2932/2932360.png",
+        },
+        {
+            id: 3,
+            title: "Meditations Completed",
+            icon: "https://static-00.iconduck.com/assets.00/clock-icon-2048x2048-o0dud9zx.png",
+        },
+        {
+            id: 4,
+            title: "Meditations viewed",
+            icon: "https://static-00.iconduck.com/assets.00/stats-icon-2048x2048-po60mvco.png",
+        },
+        {
+            id: 5,
+            title: "Day streak",
+            icon: "https://icons.veryicon.com/png/o/miscellaneous/itsm-management/change-2.png",
+        },
+        {
+            id: 6,
+            title: "Notifications created",
+            icon: "https://icons.veryicon.com/png/o/miscellaneous/itsm-management/change-2.png",
+        },
+    ];
 
 
     const loadFavorites = async () => {
@@ -68,41 +104,70 @@ const Statistics = () => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: themeStyles.BackgroundStyle.backgroundColor }}>
             <ScreenHeaderBtn />
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.container}>
-                    {isLoading ? (
-                        <ActivityIndicator size="large" color={themeStyles.TextStyle.color} />
-                    ) : favorites.length === 0 ? (
-                        <Text style={[styles.headerTitle, { color: themeStyles.TextStyle.color }]}>No favorite items found.</Text>
-                    ) : (
-                        <>
-                            <Text style={{
-                                textAlign: "center", color: COLORS.tertiary, fontWeight: "bold", fontSize: SIZES.large, padding: 8,
-                                marginTop: 10,
-                                borderWidth: 2,
-                                borderRadius: 50,
-                                background: themeStyles.BackgroundStyle.lightBackground,
-                            }}>My Favourite Exercises</Text>
-                            <DailyMeditation meditations={favorites} isDarkMode={isDarkMode} />
-                        </>
-                    )}
-                </View>
-            </ScrollView>
+            <View style={styles.container}>
+                {stats.map(stat => (
+                    <View style={[styles.card, {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]} key={stat.id}>
+                        <View style={[styles.logoContainer, {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]}>
+                            <Image
+                                source={{ uri: stat.icon }}
+                                resizeMode="cover"
+                                style={styles.logoImage}
+                            />
+                        </View>
+                        <Text style={[styles.value, {color: themeStyles.TextStyle.color}]}>{stat.id}</Text>
+                        <Text style={[styles.title, {color: themeStyles.TextStyle.color}]}>{stat.title}</Text>
+                    </View>
+                ))}
+            </View>
+            );
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: SIZES.xLarge,
-        padding: SIZES.medium,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        padding: 100,
     },
-    headerTitle: {
-        fontSize: SIZES.large,
-        fontFamily: FONT.medium,
-        color: COLORS.primary,
-        textAlign: "center",
-        marginTop: 20,
+    card: {
+        width: '48%',
+        backgroundColor: '#fff',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#ddd',
+        paddingVertical: 24,
+        alignItems: 'center',
+        marginBottom: 16,
+    },
+    icon: {
+        marginBottom: 12,
+        color: '#444',
+    },
+    value: {
+        fontSize: 18,
+        marginBottom: 4,
+    },
+    title: {
+        fontSize: 20,
+        color: '#666',
+        textAlign: 'center',
+        fontWeight: 'bold',
+    },
+    logoContainer: {
+        width: 100,
+        height: 100,
+        backgroundColor: COLORS.white,
+        justifyContent: "center",
+        borderRadius: SIZES.medium,
+        alignItems: "center",
+        marginBottom: 16,
+    },
+    logoImage: {
+        width: "100%",
+        height: "100%",
+        borderRadius: SIZES.medium,
     },
 });
 
