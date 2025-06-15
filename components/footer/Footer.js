@@ -22,7 +22,7 @@ const Footer = ({ data, isDarkMode }) => {
     const themeStyles = getThemeStyles(isDarkMode);
     const checkIfFavorite = async () => {
         try {
-            const favorites = await AsyncStorage.getItem("favorites");
+            const favorites = await AsyncStorage.getItem("userFavourites");
             const favoritesArray = favorites ? JSON.parse(favorites) : [];
             const isFav = favoritesArray.some((item) => item.id === data.id);
             setIsFavorite(isFav);
@@ -37,19 +37,44 @@ const Footer = ({ data, isDarkMode }) => {
     
     const handleFavoriteToggle = async () => {
         try {
-            let favorites = await AsyncStorage.getItem("favorites");
+            let favorites = await AsyncStorage.getItem("userFavourites");
             favorites = favorites ? JSON.parse(favorites) : [];
 
             const updatedFavorites = isFavorite
             ? favorites.filter((item) => item.id !== data.id)
             : [...favorites, data];
 
-            await AsyncStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+            await AsyncStorage.setItem("userFavourites", JSON.stringify(updatedFavorites));
             setIsFavorite(!isFavorite);
+            updateFavourites(updatedFavorites);
         } catch (error) {
             console.error("Failed to update favorites", error);
         }
     };
+
+    const getUsersFavourites = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem("UsersFavourites");
+            return jsonValue != null ? JSON.parse(jsonValue) : {};
+        } catch (e) {
+            console.error("Failed to load users favourites:", e);
+            return {};
+        }
+    }
+
+    const updateFavourites = async (favouritesList) => {
+        try {
+            const userFavourites = await getUsersFavourites();
+            const jsonvalue = await AsyncStorage.getItem("userDetails");
+            const curr_usr = JSON.parse(jsonvalue);
+
+            userFavourites[curr_usr.userName] = favouritesList;
+            await AsyncStorage.setItem("UsersFavourites", JSON.stringify(userFavourites));
+
+        } catch (error) {
+            console.error("Failed to update user favourites list", error);
+        }
+    }
 
     return (
         <View style={[styles.container, { backgroundColor: themeStyles.BackgroundStyle.lightBackground }]}>

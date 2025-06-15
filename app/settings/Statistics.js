@@ -63,7 +63,7 @@ const Statistics = () => {
         },
         {
             id: 5,
-            title: "Day streak",
+            title: "Longest Meditations",
             icon: "https://icons.veryicon.com/png/o/miscellaneous/itsm-management/change-2.png",
         },
         {

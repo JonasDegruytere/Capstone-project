@@ -61,9 +61,9 @@ const DailyReminders = () => {
         setUserDetails(user ? JSON.parse(user) : {});
       };
       const loadReminders = async () => {
-        const storedReminders = await AsyncStorage.getItem("reminders");
+        const storedReminders = await AsyncStorage.getItem("userReminders");
         const allReminders = storedReminders ? JSON.parse(storedReminders) : [];
-        const futureReminders = allReminders.filter((reminder) => new Date(reminder.triggerDate) > new Date());
+          const futureReminders = allReminders.filter((reminder) => new Date(reminder.triggerDate) > new Date());
         setReminders(futureReminders);
       };
       const handleAddReminder = async () => {
@@ -83,19 +83,21 @@ const DailyReminders = () => {
             alert("Please select a future time.");
             return;
           }
+          const descrToUse = notDescr === "" ? "Reminder: Time for your daily task!" : notDescr;
           const newReminder = {
             id: Date.now(),
             date: selectedDate,
             time: manualTime || triggerDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-            description: notDescr, // `Reminder: Time for your daily task!`
+            description: descrToUse,
             triggerDate: triggerDate.toISOString(),
           };
           try {
             const updatedReminders = [...reminders, newReminder];
-            await AsyncStorage.setItem("reminders", JSON.stringify(updatedReminders));
+            await AsyncStorage.setItem("userReminders", JSON.stringify(updatedReminders));
             setReminders(updatedReminders);
             await scheduleNotification(newReminder);
             alert("Reminder added successfully!");
+            await updateReminders(updatedReminders);
           }
           catch (error) {
             alert("Error adding reminder.");
@@ -118,8 +120,9 @@ const DailyReminders = () => {
     }
     const deleteReminder = async (id) => {
         const updatedReminders = reminders.filter((reminder) => reminder.id !== id);
-        await AsyncStorage.setItem("reminders", JSON.stringify(updatedReminders));
+        await AsyncStorage.setItem("userReminders", JSON.stringify(updatedReminders));
         setReminders(updatedReminders);
+        await updateReminders(updatedReminders);
       };
       const Reminder = ({ item }) => (
           <View style={[styles.reminderContainer, {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]}>
@@ -129,7 +132,35 @@ const DailyReminders = () => {
             <Text style={styles.deleteText}>Delete</Text>
           </TouchableOpacity>
         </View>
-      );
+    );
+
+    const getUsersReminders = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem("UsersReminders");
+            return jsonValue != null ? JSON.parse(jsonValue) : {};
+        } catch (e) {
+            console.error("Failed to load users reminders:", e);
+            return {};
+        }
+    }
+
+    const updateReminders = async (remindersList) => {
+        try {
+            const userReminders = await getUsersReminders();
+            const jsonvalue = await AsyncStorage.getItem("userDetails");
+            const curr_usr = JSON.parse(jsonvalue);
+
+            userReminders[curr_usr.userName] = remindersList;
+            await AsyncStorage.setItem("UsersReminders", JSON.stringify(userReminders));
+
+        } catch (error) {
+            console.error("Failed to update user reminders list", error);
+        }
+    }
+
+
+
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: themeStyles.BackgroundStyle.backgroundColor }}>
             <ScreenHeaderBtn />

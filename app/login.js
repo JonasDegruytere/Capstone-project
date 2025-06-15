@@ -5,30 +5,38 @@ import { Stack, useRouter } from "expo-router";
 import { COLORS, icons, SHADOWS } from "../constants";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
   const router = useRouter();
 
   const handleLogin = async () => {
-        if (!email || !password) {
+        if (!username || !password) {
         Alert.alert("Validation Error", "Please fill in all fields.");
         return;
         }
 
-        const userDetails = { email, password, token: "sample-token" };
+      try {
+          const jsonvalue = await AsyncStorage.getItem("Users");
+          const currentUsers = JSON.parse(jsonvalue);
+        if (username in currentUsers) {
+            const parsedDetails = currentUsers[username];
 
-        console.log('userDetails', userDetails);
-      console.log(AsyncStorage.getAllKeys());
+            if (password === parsedDetails.password) {
+                await AsyncStorage.setItem("userDetails", JSON.stringify(currentUsers[username]));
 
-        try {
-        const detailsDatafromSignup = await AsyncStorage.getItem("userDetails");
-        if (detailsDatafromSignup) {
-            const parsedDetails = JSON.parse(detailsDatafromSignup);
-            if (userDetails.email === parsedDetails.email && userDetails.password === parsedDetails.password) {
-            router.push("/home");
+                const favvalue = await AsyncStorage.getItem("UsersFavourites");
+                const curr_favs = JSON.parse(favvalue);
+                await AsyncStorage.setItem("userFavourites", JSON.stringify(curr_favs[username]));
+
+                const remvalue = await AsyncStorage.getItem("UsersReminders");
+                const curr_rems = JSON.parse(remvalue);
+                await AsyncStorage.setItem("userReminders", JSON.stringify(curr_rems[username]));
+
+                router.push("/home");
             } else {
-            Alert.alert("Error", "Incorrect email or password.");
-            alert("Error Incorrect email or password.");
+                Alert.alert("Error", "Incorrect password.");
+                alert("Error Incorrect password.");
             }
         } else {
             Alert.alert("Error", "No user details found in AsyncStorage.");
@@ -76,7 +84,7 @@ const Login = () => {
 
         {/* Form Component */}
         <View style={{ marginTop: 20 }}>
-          <View style={{ marginBottom: 20 }}>
+            <View style={{ marginBottom: 20 }}>
             <TextInput
               style={{
                 borderWidth: 1,
@@ -85,9 +93,9 @@ const Login = () => {
                 borderRadius: 5,
                 marginBottom: 10,
               }}
-              value={email}
-              onChangeText={setEmail}
-              placeholder="Email"
+              value={username}
+              onChangeText={setUsername}
+              placeholder="Username"
             />
             <TextInput
               style={{

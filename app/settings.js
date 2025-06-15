@@ -70,18 +70,40 @@ const Settings = () => {
         return;
     }
     setUserDetails(user);
-  };
+    };
+
+    const getUsers = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem("Users");
+            return jsonValue != null ? JSON.parse(jsonValue) : {};
+        } catch (e) {
+            console.error("Failed to load users:", e);
+            return {};
+        }
+    }
 
   useEffect(() => {
     loadUserDetails();
   }, []);
-  const handleAcountDelete = async () => {
-    await AsyncStorage.removeItem("userDetails");
-    router.push("/login");
-    };
+    const handleAcountDelete = async () => {
+        const account = JSON.parse(userDetails);
+        const currentUsers = await getUsers();
+        if (account.userName in currentUsers) {
+            delete currentUsers[account.userName];
+            await AsyncStorage.setItem("Users", JSON.stringify(currentUsers));
+            localStorage.removeItem("userDetails");
+            localStorage.removeItem("userFavourites");
+            localStorage.removeItem("userData");
+            localStorage.removeItem("userReminders");
+        }
+        router.push("/login");
+        };
 
     const handleLogout = async () => {
-        localStorage.clear();
+        localStorage.removeItem("userDetails");
+        localStorage.removeItem("userFavourites");
+        localStorage.removeItem("userData");
+        localStorage.removeItem("userReminders");
         router.push("/login");
     };
   return (

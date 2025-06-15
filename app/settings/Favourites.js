@@ -40,7 +40,7 @@ const Favourites = () => {
 
      const loadFavorites = async () => {
         try {
-        const storedFavorites = await AsyncStorage.getItem("favorites");
+        const storedFavorites = await AsyncStorage.getItem("userFavourites");
         const favoritesArray = storedFavorites ? JSON.parse(storedFavorites) : [];
         setFavorites(favoritesArray);
         } catch (error) {

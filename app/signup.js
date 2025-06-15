@@ -23,6 +23,17 @@ const SignUp = () => {
     const [password, setPassword] = useState("");
     const router = useRouter();
 
+    const getUsers = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem("Users");
+            return jsonValue != null ? JSON.parse(jsonValue) : {};
+        } catch (e) {
+            console.error("Failed to load users:", e);
+            return {};
+        }
+    }
+
+
     const handleRegister = async () => {
         if (!userName || !email || !password) {
             Alert.alert("Validation Error", "Please fill in all fields.");
@@ -37,7 +48,10 @@ const SignUp = () => {
     
         const userDetails = { userName, email,password, token: "sample-token" };
         await AsyncStorage.setItem("userDetails", JSON.stringify(userDetails));
-        console.log("User logged in:", userDetails);
+
+        const currentUsers = await getUsers();
+        currentUsers[userName] = userDetails;
+        await AsyncStorage.setItem("Users", JSON.stringify(currentUsers));
     
         router.push("/home");
       };
