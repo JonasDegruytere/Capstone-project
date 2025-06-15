@@ -36,7 +36,7 @@ const Settings = () => {
      {
        id: 2,
        title: "My Favourites",
-       icon: "https://cdn-icons-png.flaticon.com/512/2932/2932360.png",
+         icon: "https://www.iconpacks.net/icons/2/free-heart-icon-3510-thumb.png",
        target: "Mental Health",
        route: "Favourites",
      },

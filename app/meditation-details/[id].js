@@ -69,6 +69,7 @@ const MeditationDetails = () => {
 
     useEffect(() => {
         loadUserDetails();
+        updateMetaData();
     }, []);
 
 
@@ -80,6 +81,36 @@ const MeditationDetails = () => {
         setRefreshing(false);
         }, []);
 
+
+    const getUsersMetaData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem("UsersMetaData");
+            return jsonValue != null ? JSON.parse(jsonValue) : {};
+        } catch (e) {
+            console.error("Failed to load users metadata:", e);
+            return {};
+        }
+    }
+
+    const updateMetaData = async () => {
+        try {
+            let usr_data = await AsyncStorage.getItem("userData");
+            usr_data = usr_data ? JSON.parse(usr_data) : {};
+
+            usr_data["tot_views"] = usr_data["tot_views"] ? usr_data["tot_views"] + 1 : 1;
+            await AsyncStorage.setItem("userData", JSON.stringify(usr_data));
+
+
+            const usersMetaData = await getUsersMetaData();
+            const jsonvalue = await AsyncStorage.getItem("userDetails");
+            const curr_usr = JSON.parse(jsonvalue);
+            usersMetaData[curr_usr.userName] = usr_data;
+            await AsyncStorage.setItem("UsersMetaData", JSON.stringify(usersMetaData));
+
+        } catch (error) {
+            console.error("Failed to update user metadata", error);
+        }
+    }
 
     const displayTabContent = () => {
         if (activeTab === "About") {

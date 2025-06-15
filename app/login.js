@@ -33,6 +33,10 @@ const Login = () => {
                 const curr_rems = JSON.parse(remvalue);
                 await AsyncStorage.setItem("userReminders", JSON.stringify(curr_rems[username]));
 
+                const metavalue = await AsyncStorage.getItem("UsersMetaData");
+                const curr_meta = JSON.parse(metavalue);
+                await AsyncStorage.setItem("userData", JSON.stringify(curr_meta[username]));
+
                 router.push("/home");
             } else {
                 Alert.alert("Error", "Incorrect password.");

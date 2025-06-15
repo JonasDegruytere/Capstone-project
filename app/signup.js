@@ -52,6 +52,25 @@ const SignUp = () => {
         const currentUsers = await getUsers();
         currentUsers[userName] = userDetails;
         await AsyncStorage.setItem("Users", JSON.stringify(currentUsers));
+
+        const favvalue = await AsyncStorage.getItem("UsersFavourites");
+        const curr_favs = JSON.parse(favvalue) ? JSON.parse(favvalue) : {};
+        curr_favs[userName] = [];
+        await AsyncStorage.setItem("userFavourites", JSON.stringify(curr_favs[userName]));
+        await AsyncStorage.setItem("UsersFavourites", JSON.stringify(curr_favs));
+
+        const remvalue = await AsyncStorage.getItem("UsersReminders");
+        const curr_rems = JSON.parse(remvalue) ? JSON.parse(remvalue) : {};
+        curr_rems[userName] = [];
+        await AsyncStorage.setItem("userReminders", JSON.stringify(curr_rems[userName]));
+        await AsyncStorage.setItem("UsersReminders", JSON.stringify(curr_rems));
+
+        const metavalue = await AsyncStorage.getItem("UsersMetaData");
+        const curr_meta = JSON.parse(metavalue) ? JSON.parse(metavalue) : {};
+        curr_meta[userName] = {};
+        await AsyncStorage.setItem("userData", JSON.stringify(curr_meta[userName]));
+        await AsyncStorage.setItem("UsersMetaData", JSON.stringify(curr_meta));
+
     
         router.push("/home");
       };

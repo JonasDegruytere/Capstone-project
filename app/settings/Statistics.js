@@ -38,53 +38,54 @@ const Statistics = () => {
     const isDarkMode = theme === "dark";
     const themeStyles = getThemeStyles(isDarkMode);
 
+    const [tot_time, set_tot_time] = useState(0);
+    const [long_time, set_long_time] = useState(0); 
+    const [tot_meds, set_tot_meds] = useState(0);
+    const [tot_favs, set_tot_favs] = useState(0);
+    const [tot_nots, set_tot_nots] = useState(0);
+    const [tot_views, set_tot_views] = useState(0);
+
+
 
 
     const stats = [
         {
             id: 1,
+            value: tot_favs,
             title: "Favourites",
-            icon: "https://cdn-icons-png.flaticon.com/512/126/126472.png",
+            icon: "https://www.iconpacks.net/icons/2/free-heart-icon-3510-thumb.png",
         },
         {
             id: 2,
+            value: tot_time,
             title: "Minutes Meditated",
-            icon: "https://cdn-icons-png.flaticon.com/512/2932/2932360.png",
-        },
-        {
-            id: 3,
-            title: "Meditations Completed",
             icon: "https://static-00.iconduck.com/assets.00/clock-icon-2048x2048-o0dud9zx.png",
         },
         {
+            id: 3,
+            value: tot_meds,
+            title: "Meditations Completed",
+            icon: "https://static.thenounproject.com/png/3946740-200.png",
+        },
+        {
             id: 4,
+            value: tot_views,
             title: "Meditations viewed",
-            icon: "https://static-00.iconduck.com/assets.00/stats-icon-2048x2048-po60mvco.png",
+            icon: "https://static.thenounproject.com/png/201934-200.png ",
         },
         {
             id: 5,
+            value: long_time,
             title: "Longest Meditations",
-            icon: "https://icons.veryicon.com/png/o/miscellaneous/itsm-management/change-2.png",
+            icon: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Hourglass_icon.png",
         },
         {
             id: 6,
+            value: tot_nots,
             title: "Notifications created",
-            icon: "https://icons.veryicon.com/png/o/miscellaneous/itsm-management/change-2.png",
+            icon: "https://icons.veryicon.com/png/o/object/material-design-icons/notifications-1.png",
         },
     ];
-
-
-    const loadFavorites = async () => {
-        try {
-            const storedFavorites = await AsyncStorage.getItem("favorites");
-            const favoritesArray = storedFavorites ? JSON.parse(storedFavorites) : [];
-            setFavorites(favoritesArray);
-        } catch (error) {
-            console.error("Error loading favorites:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     const loadUserDetails = async () => {
         const user = await AsyncStorage.getItem("userDetails");
@@ -97,31 +98,71 @@ const Statistics = () => {
 
     useFocusEffect(
         React.useCallback(() => {
-            loadFavorites();
             loadUserDetails();
         }, [])
     );
+
+    useEffect(() => {
+        const loadMetaData = async () => {
+            let usr_data = await AsyncStorage.getItem("userData");
+            usr_data = usr_data ? JSON.parse(usr_data) : {};
+
+            if (!usr_data["completed"]) { }
+            else {
+                set_tot_meds(usr_data["completed"]);
+            }
+            if (!usr_data["total_time"]) { }
+            else {
+                set_tot_time(usr_data["total_time"]);
+            }
+            if (!usr_data["longest"]) { }
+            else {
+                set_long_time(usr_data["longest"]);
+            }
+            if (!usr_data["tot_reminders"]) { }
+            else {
+                set_tot_nots(usr_data["tot_reminders"]);
+            }
+            if (!usr_data["tot_views"]) { }
+            else {
+                set_tot_views(usr_data["tot_views"]);
+            }
+
+            const storedFavorites = await AsyncStorage.getItem("userFavourites");
+            const favoritesArray = storedFavorites ? JSON.parse(storedFavorites) : [];
+            set_tot_favs(favoritesArray.length);
+            setFavorites(favoritesArray);
+        };
+
+        loadMetaData();
+    }, []);
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: themeStyles.BackgroundStyle.backgroundColor }}>
             <ScreenHeaderBtn />
             <View style={styles.container}>
                 {stats.map(stat => (
-                    <View style={[styles.card, {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]} key={stat.id}>
-                        <View style={[styles.logoContainer, {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]}>
+                    <View
+                        style={[styles.card, { backgroundColor: themeStyles.BackgroundStyle.lightBackground }]}
+                        key={stat.id}
+                    >
+                        <View
+                            style={[styles.logoContainer, { backgroundColor: themeStyles.BackgroundStyle.lightBackground }]}
+                        >
                             <Image
                                 source={{ uri: stat.icon }}
                                 resizeMode="cover"
                                 style={styles.logoImage}
                             />
                         </View>
-                        <Text style={[styles.value, {color: themeStyles.TextStyle.color}]}>{stat.id}</Text>
-                        <Text style={[styles.title, {color: themeStyles.TextStyle.color}]}>{stat.title}</Text>
+                        <Text style={[styles.value, { color: themeStyles.TextStyle.color }]}>{stat.value}</Text>
+                        <Text style={[styles.title, { color: themeStyles.TextStyle.color }]}>{stat.title}</Text>
                     </View>
                 ))}
             </View>
-            );
         </SafeAreaView>
-    )
+    );
+
 }
 
 const styles = StyleSheet.create({

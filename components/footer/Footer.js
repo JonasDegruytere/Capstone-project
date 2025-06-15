@@ -1,9 +1,10 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "./Footer.style";
 import { icons } from "../../constants";
 import { COLORS, FONT, SIZES, SHADOWS } from "../../constants/theme";
+import { useRouter } from "expo-router";
 
 
 const getThemeStyles = (isDarkMode) => ({
@@ -20,6 +21,8 @@ const getThemeStyles = (isDarkMode) => ({
 const Footer = ({ data, isDarkMode }) => {
     const [isFavorite, setIsFavorite] = useState(false);
     const themeStyles = getThemeStyles(isDarkMode);
+    const router = useRouter();
+
     const checkIfFavorite = async () => {
         try {
             const favorites = await AsyncStorage.getItem("userFavourites");
@@ -76,6 +79,50 @@ const Footer = ({ data, isDarkMode }) => {
         }
     }
 
+    function extractMinutes(durationString) {
+        const match = durationString.match(/\d+/);
+        return match ? parseInt(match[0], 10) : null;
+    }
+
+    const handleCompleted = async () => {
+        try {
+            let usr_data = await AsyncStorage.getItem("userData");
+            usr_data = usr_data ? JSON.parse(usr_data) : {};
+            const minutes = extractMinutes(data.duration);
+
+            usr_data["completed"] = usr_data["completed"] ? usr_data["completed"] + 1 : 1;
+            usr_data["total_time"] = usr_data["total_time"] ? usr_data["total_time"] + minutes : minutes;
+
+            if (!usr_data["longest"]) { usr_data["longest"] = 0; }
+            if (usr_data["longest"] < minutes) { usr_data["longest"] = minutes; }
+            await AsyncStorage.setItem("userData", JSON.stringify(usr_data));
+
+            const usersMetaData = await getUsersMetaData();
+            const jsonvalue = await AsyncStorage.getItem("userDetails");
+            const curr_usr = JSON.parse(jsonvalue);
+            usersMetaData[curr_usr.userName] = usr_data;
+            await AsyncStorage.setItem("UsersMetaData", JSON.stringify(usersMetaData));
+
+            router.push("/home")
+        }
+        catch (error) {
+            console.error("Failed to update meditation completion", error);
+        }
+    }
+
+    const getUsersMetaData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem("UsersMetaData");
+            return jsonValue != null ? JSON.parse(jsonValue) : {};
+        } catch (e) {
+            console.error("Failed to load users metadata:", e);
+            return {};
+        }
+    }
+
+
+
+
     return (
         <View style={[styles.container, { backgroundColor: themeStyles.BackgroundStyle.lightBackground }]}>
             <TouchableOpacity style={[styles.likeBtn]} onPress={handleFavoriteToggle}>
@@ -93,6 +140,11 @@ const Footer = ({ data, isDarkMode }) => {
                 <Text style={[styles.applyBtnText, {color: themeStyles.TextStyle.color}]}>
             {isFavorite ? "Remove from favorites" : "Add to favorites"}
         </Text>
+        </TouchableOpacity>
+            <TouchableOpacity style={[styles.applyBtn, { backgroundColor: "#90EE90" }]} onPress={handleCompleted}>
+                <Text style={[styles.applyBtnText, { color: themeStyles.TextStyle.color }, { backgroundColor: "#90EE90"}]}>
+                Complete Exercise
+            </Text>
         </TouchableOpacity>
     </View>
     );

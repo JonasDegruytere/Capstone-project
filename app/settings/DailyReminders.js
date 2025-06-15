@@ -83,6 +83,11 @@ const DailyReminders = () => {
             alert("Please select a future time.");
             return;
           }
+          const strictRegex = /^([01][0-9]|2[0-3]):[0-5][0-9]$/;
+          if (!strictRegex.test(manualTime)) {
+              alert("Please enter a valid time in HH:mm format");
+              return;
+          }
           const descrToUse = notDescr === "" ? "Reminder: Time for your daily task!" : notDescr;
           const newReminder = {
             id: Date.now(),
@@ -98,6 +103,7 @@ const DailyReminders = () => {
             await scheduleNotification(newReminder);
             alert("Reminder added successfully!");
             await updateReminders(updatedReminders);
+            await updateMetaData();
           }
           catch (error) {
             alert("Error adding reminder.");
@@ -144,6 +150,16 @@ const DailyReminders = () => {
         }
     }
 
+    const getUsersMetaData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem("UsersMetaData");
+            return jsonValue != null ? JSON.parse(jsonValue) : {};
+        } catch (e) {
+            console.error("Failed to load users metadata:", e);
+            return {};
+        }
+    }
+
     const updateReminders = async (remindersList) => {
         try {
             const userReminders = await getUsersReminders();
@@ -158,6 +174,41 @@ const DailyReminders = () => {
         }
     }
 
+    const updateMetaData = async () => {
+        try {
+            let usr_data = await AsyncStorage.getItem("userData");
+            usr_data = usr_data ? JSON.parse(usr_data) : {};
+
+            usr_data["tot_reminders"] = usr_data["tot_reminders"] ? usr_data["tot_reminders"] + 1 : 1;
+            await AsyncStorage.setItem("userData", JSON.stringify(usr_data));
+
+            const usersMetaData = await getUsersMetaData();
+            const jsonvalue = await AsyncStorage.getItem("userDetails");
+            const curr_usr = JSON.parse(jsonvalue);
+            usersMetaData[curr_usr.userName] = usr_data;
+            await AsyncStorage.setItem("UsersMetaData", JSON.stringify(usersMetaData));
+
+        } catch (error) {
+            console.error("failed to properly update user metdata", error);
+        }
+    }
+
+    const handleTimeChange = (text) => {
+        const cleaned = text.replace(/[^\d]/g, '');
+
+        let formatted = cleaned;
+        if (cleaned.length >= 3) {
+            formatted = `${cleaned.slice(0, 2)}:${cleaned.slice(2, 4)}`;
+        }
+
+        if (formatted.length > 5) return;
+
+        // Allow partial matching while typing
+        const partialRegex = /^([01]?[0-9]|2[0-3])?(:[0-5]?[0-9]?)?$/;
+        if (!partialRegex.test(formatted)) return;
+
+        setManualTime(formatted);
+    };
 
 
 
@@ -196,7 +247,7 @@ const DailyReminders = () => {
           <TextInput
             placeholder="Enter Time (HH:mm)"
             value={manualTime}
-            onChangeText={setManualTime}
+            onChangeText={handleTimeChange}
             keyboardType="numeric"
             maxLength={5}
             style={[styles.input, { color: themeStyles.TextStyle.color }, {backgroundColor: themeStyles.BackgroundStyle.lightBackground}]}
