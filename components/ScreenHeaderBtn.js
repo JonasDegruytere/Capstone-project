@@ -5,7 +5,6 @@ import icons from "../constants/icons";
 import {  useRouter } from "expo-router";
 
 const ScreenHeaderBtn = ({detailPage,handleShare}) => {
-    console.log(detailPage);
 
 
     const router=useRouter();

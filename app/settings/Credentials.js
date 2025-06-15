@@ -62,6 +62,16 @@ const Credentials = () => {
         }, [])
     );
 
+    const getUsers = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem("Users");
+            return jsonValue != null ? JSON.parse(jsonValue) : {};
+        } catch (e) {
+            console.error("Failed to load users:", e);
+            return {};
+        }
+    }
+
     const handleChangeEmail = async () => {
         if (newEmail == "") {
             Alert.alert("Validation Error", "Please enter a valid email.");
@@ -76,6 +86,9 @@ const Credentials = () => {
         const a = JSON.parse(userDetails);
         a.email = newEmail;
         await AsyncStorage.setItem("userDetails", JSON.stringify(a));
+        const currentUsers = await getUsers();
+        currentUsers[a.userName] = a;
+        await AsyncStorage.setItem("Users", JSON.stringify(currentUsers));
     }
 
     const handleChangePass = async () => {
@@ -87,6 +100,9 @@ const Credentials = () => {
         const a = JSON.parse(userDetails);
         a.password = newPass;
         await AsyncStorage.setItem("userDetails", JSON.stringify(a));
+        const currentUsers = await getUsers();
+        currentUsers[a.userName] = a;
+        await AsyncStorage.setItem("Users", JSON.stringify(currentUsers));
     }
 
     return (

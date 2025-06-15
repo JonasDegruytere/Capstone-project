@@ -542,7 +542,7 @@ const useFetch = () => {
         setSelfCompassion(SelfCompassion);
         setGrouding(Grouding);
         setIsLoading(false);
-      }, 1000);
+      }, 1);
     } catch (error) {
       setError("Failed to fetch data");
       setIsLoading(false);

@@ -82,13 +82,62 @@ const Settings = () => {
         }
     }
 
+    const getFavs = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem("UsersFavourites");
+            return jsonValue != null ? JSON.parse(jsonValue) : {};
+        } catch (e) {
+            console.error("Failed to load users:", e);
+            return {};
+        }
+    }
+
+    const getRems = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem("UsersReminders");
+            return jsonValue != null ? JSON.parse(jsonValue) : {};
+        } catch (e) {
+            console.error("Failed to load users:", e);
+            return {};
+        }
+    }
+
+    const getData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem("UsersMetaData");
+            return jsonValue != null ? JSON.parse(jsonValue) : {};
+        } catch (e) {
+            console.error("Failed to load users:", e);
+            return {};
+        }
+    }
+
   useEffect(() => {
     loadUserDetails();
   }, []);
+
+    const deleteAccountData = async ({ userName }) => {
+        const curr_favs = await getFavs();
+        delete curr_favs[userName];
+        await AsyncStorage.setItem("UsersFavourites", JSON.stringify(curr_favs));
+
+        const curr_rems = await getRems();
+        delete curr_rems[userName];
+        await AsyncStorage.setItem("UsersReminders", JSON.stringify(curr_rems));
+
+        const curr_meta = await getData();
+        if (curr_meta.hasOwnProperty(userName)) {
+            delete curr_meta[userName];
+            await AsyncStorage.setItem("UsersMetaData", JSON.stringify(curr_meta));
+        }
+    }
+
+    
     const handleAcountDelete = async () => {
         const account = JSON.parse(userDetails);
         const currentUsers = await getUsers();
         if (account.userName in currentUsers) {
+            await deleteAccountData({ userName: account.userName });
             delete currentUsers[account.userName];
             await AsyncStorage.setItem("Users", JSON.stringify(currentUsers));
             localStorage.removeItem("userDetails");
