@@ -43,14 +43,14 @@ const Settings = () => {
      {
        id: 3,
        title: "Daily Reminders",
-         icon: "https://static-00.iconduck.com/assets.00/clock-icon-2048x2048-o0dud9zx.png",
+         icon: "https://cdn-icons-png.flaticon.com/512/109/109613.png",
        target: "Mental Health",
        route: "DailyReminders",
     },
     {
         id: 4,
         title: "Account Statistics",
-        icon: "https://static-00.iconduck.com/assets.00/stats-icon-2048x2048-po60mvco.png",
+        icon: "https://cdn-icons-png.flaticon.com/512/87/87578.png",
         target: "Mental Health",
         route: "Statistics",
     },
